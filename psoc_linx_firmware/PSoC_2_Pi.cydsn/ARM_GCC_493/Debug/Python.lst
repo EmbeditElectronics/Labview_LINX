@@ -1,0 +1,2344 @@
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"Python.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	buffer,4,4
+  19              		.section	.text.Python_parser,"ax",%progbits
+  20              		.align	2
+  21              		.global	Python_parser
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	Python_parser, %function
+  25              	Python_parser:
+  26              	.LFB56:
+  27              		.file 1 ".\\Python.c"
+   1:.\Python.c    **** /**
+   2:.\Python.c    **** * \file Python.c
+   3:.\Python.c    **** * \brief Handles all communication and parsing of data for a python device, such as the raspberry p
+   4:.\Python.c    ****            This should work for any device where both sides of the API were created, extending beyo
+   5:.\Python.c    **** *
+   6:.\Python.c    **** * Version 1.2.4
+   7:.\Python.c    **** *
+   8:.\Python.c    **** * \author Brian Bradley
+   9:.\Python.c    **** *
+  10:.\Python.c    **** * \bug None known, but this is untested
+  11:.\Python.c    **** *
+  12:.\Python.c    **** *
+  13:.\Python.c    **** * Copyright Embedit Electronics
+  14:.\Python.c    **** * 
+  15:.\Python.c    **** */
+  16:.\Python.c    **** #ifndef PYTHON_H
+  17:.\Python.c    ****     #include "Python.h"
+  18:.\Python.c    **** #endif
+  19:.\Python.c    **** 
+  20:.\Python.c    **** #if defined(USE_I2C)
+  21:.\Python.c    ****     uint8 WR_buf[I2C_BUFFER_SIZE]; 
+  22:.\Python.c    ****     uint8 RD_buf[I2C_BUFFER_SIZE];
+  23:.\Python.c    **** #elif defined(USE_SERIAL)
+  24:.\Python.c    ****     #define BUFFER_LEN          (4u)
+  25:.\Python.c    ****     uint8 buffer[BUFFER_LEN];
+  26:.\Python.c    **** #endif
+  27:.\Python.c    **** 
+  28:.\Python.c    **** void Python_parser(vessel_type *vessel)
+  29:.\Python.c    **** {
+  28              		.loc 1 29 0
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 2
+
+
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 84B0     		sub	sp, sp, #16
+  37              		.cfi_def_cfa_offset 24
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  30:.\Python.c    ****     uint8 cmd = vessel->cmd;
+  41              		.loc 1 30 0
+  42 0008 7B68     		ldr	r3, [r7, #4]
+  43 000a 5B78     		ldrb	r3, [r3, #1]
+  44 000c FB73     		strb	r3, [r7, #15]
+  31:.\Python.c    ****     uint8 addr = vessel->addr;
+  45              		.loc 1 31 0
+  46 000e 7B68     		ldr	r3, [r7, #4]
+  47 0010 1B78     		ldrb	r3, [r3]
+  48 0012 BB73     		strb	r3, [r7, #14]
+  32:.\Python.c    ****     uint16 temp_data = vessel->dat;
+  49              		.loc 1 32 0
+  50 0014 7B68     		ldr	r3, [r7, #4]
+  51 0016 5B88     		ldrh	r3, [r3, #2]	@ movhi
+  52 0018 BB81     		strh	r3, [r7, #12]	@ movhi
+  33:.\Python.c    ****     uint8 waveType;
+  34:.\Python.c    ****     uint8 amp;
+  35:.\Python.c    ****     uint8 dcB;
+  36:.\Python.c    ****     
+  37:.\Python.c    ****     switch(addr)
+  53              		.loc 1 37 0
+  54 001a BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+  55 001c 0F2B     		cmp	r3, #15
+  56 001e 00F08181 		beq	.L42
+  57 0022 0F2B     		cmp	r3, #15
+  58 0024 1ADC     		bgt	.L4
+  59 0026 0A2B     		cmp	r3, #10
+  60 0028 00F07E81 		beq	.L43
+  61 002c 0A2B     		cmp	r3, #10
+  62 002e 0ADC     		bgt	.L6
+  63 0030 062B     		cmp	r3, #6
+  64 0032 00F07B81 		beq	.L44
+  65 0036 062B     		cmp	r3, #6
+  66 0038 01DC     		bgt	.L8
+  67 003a 042B     		cmp	r3, #4
+  38:.\Python.c    ****     {
+  39:.\Python.c    ****         //delsig_adc
+  40:.\Python.c    ****         #ifdef CY_ADC_DELSIG_ADC_DelSig_1_H
+  41:.\Python.c    ****             case DELSIG_ADC_CONTROL: break;
+  42:.\Python.c    ****         #endif
+  43:.\Python.c    ****         
+  44:.\Python.c    ****         //sar adc 1
+  45:.\Python.c    ****         #ifdef CY_ADC_SAR_ADC_SAR_1_H 
+  46:.\Python.c    ****             case SAR_ADC0_CONTROL: break;
+  47:.\Python.c    ****         #endif
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 3
+
+
+  48:.\Python.c    ****         
+  49:.\Python.c    ****         //sar adc 2
+  50:.\Python.c    ****         #ifdef CY_ADC_SAR_ADC_SAR_2_H 
+  51:.\Python.c    ****             case SAR_ADC1_CONTROL: break;
+  52:.\Python.c    ****         #endif
+  53:.\Python.c    ****         
+  54:.\Python.c    ****         //VDAC1
+  55:.\Python.c    ****         #ifdef CY_VDAC8_VDAC8_1_H
+  56:.\Python.c    ****             case VDAC0_CONTROL: break;        
+  68              		.loc 1 56 0
+  69 003c 85E1     		b	.L1
+  70              	.L8:
+  37:.\Python.c    ****     {
+  71              		.loc 1 37 0
+  72 003e 082B     		cmp	r3, #8
+  73 0040 26D0     		beq	.L10
+  74 0042 092B     		cmp	r3, #9
+  57:.\Python.c    ****         #endif
+  58:.\Python.c    ****         
+  59:.\Python.c    ****         //VDAC2
+  60:.\Python.c    ****         #ifdef CY_VDAC8_VDAC8_2_H
+  61:.\Python.c    ****             case VDAC1_CONTROL: break;
+  62:.\Python.c    ****         #endif
+  63:.\Python.c    ****         
+  64:.\Python.c    ****         //IDAC1
+  65:.\Python.c    ****         #ifdef CY_IDAC8_IDAC8_1_H
+  66:.\Python.c    ****             case IDAC0_CONTROL:  break;     
+  67:.\Python.c    ****         #endif
+  68:.\Python.c    ****         
+  69:.\Python.c    ****         //IDAC2
+  70:.\Python.c    ****         #ifdef CY_IDAC8_IDAC8_2_H
+  71:.\Python.c    ****             case IDAC1_CONTROL: break;     
+  72:.\Python.c    ****         #endif
+  73:.\Python.c    ****         
+  74:.\Python.c    ****         //Wave DAC
+  75:.\Python.c    ****         #ifdef CY_WaveDAC8_WaveDAC8_1_H
+  76:.\Python.c    ****             case WAVEDAC_CONTROL: 
+  77:.\Python.c    ****             switch(cmd)
+  78:.\Python.c    ****             {
+  79:.\Python.c    ****                 case 0x04:
+  80:.\Python.c    ****                     Python_getData(vessel);
+  81:.\Python.c    ****                     waveType = vessel->addr;
+  82:.\Python.c    ****                     amp = vessel->cmd;
+  83:.\Python.c    ****                     dcB = vessel->dat;
+  84:.\Python.c    ****                     vessel->cmd = cmd;
+  85:.\Python.c    ****                     vessel->addr = addr;
+  86:.\Python.c    ****                     vessel->waveType = waveType;
+  87:.\Python.c    ****                     vessel->amp = amp;
+  88:.\Python.c    ****                     vessel->dcB = dcB;
+  89:.\Python.c    ****                     break;
+  90:.\Python.c    ****                     
+  91:.\Python.c    ****             }
+  92:.\Python.c    ****             break;      
+  93:.\Python.c    ****         #endif
+  94:.\Python.c    ****         
+  95:.\Python.c    ****         //first PWM
+  96:.\Python.c    ****         #ifdef CY_PWM_PWM_1_H
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 4
+
+
+  97:.\Python.c    ****             case PWM_REGISTER0: break;
+  75              		.loc 1 97 0
+  76 0044 81E1     		b	.L1
+  77              	.L6:
+  37:.\Python.c    ****     {
+  78              		.loc 1 37 0
+  79 0046 0C2B     		cmp	r3, #12
+  80 0048 00F07281 		beq	.L45
+  81 004c 0C2B     		cmp	r3, #12
+  82 004e C0F27181 		blt	.L46
+  83 0052 0D2B     		cmp	r3, #13
+  84 0054 00F07081 		beq	.L47
+  85 0058 0E2B     		cmp	r3, #14
+  98:.\Python.c    ****         #endif
+  99:.\Python.c    ****         
+ 100:.\Python.c    ****         //second PWM
+ 101:.\Python.c    ****         #ifdef CY_PWM_PWM_2_H
+ 102:.\Python.c    ****             case PWM_REGISTER1: break;
+ 103:.\Python.c    ****         #endif
+ 104:.\Python.c    ****         
+ 105:.\Python.c    ****         //third PWM
+ 106:.\Python.c    ****         #ifdef CY_PWM_PWM_3_H
+ 107:.\Python.c    ****             case PWM_REGISTER2: break;
+ 108:.\Python.c    ****         #endif
+ 109:.\Python.c    ****         
+ 110:.\Python.c    ****         //fourth PWM
+ 111:.\Python.c    ****         #ifdef CY_PWM_PWM_4_H
+ 112:.\Python.c    ****             case PWM_REGISTER3: break;  
+ 113:.\Python.c    ****         #endif
+ 114:.\Python.c    ****         
+ 115:.\Python.c    ****         //fifth PWM
+ 116:.\Python.c    ****         #ifdef CY_PWM_PWM_5_H
+ 117:.\Python.c    ****             case PWM_REGISTER4: break;
+ 118:.\Python.c    ****         #endif
+ 119:.\Python.c    ****         
+ 120:.\Python.c    ****         //sixth PWM
+ 121:.\Python.c    ****         #ifdef CY_PWM_PWM_6_H
+ 122:.\Python.c    ****             case PWM_REGISTER5: break;  
+  86              		.loc 1 122 0
+  87 005a 76E1     		b	.L1
+  88              	.L4:
+  37:.\Python.c    ****     {
+  89              		.loc 1 37 0
+  90 005c FB2B     		cmp	r3, #251
+  91 005e 00F0B180 		beq	.L16
+  92 0062 FB2B     		cmp	r3, #251
+  93 0064 0ADC     		bgt	.L17
+  94 0066 162B     		cmp	r3, #22
+  95 0068 39D0     		beq	.L18
+  96 006a 162B     		cmp	r3, #22
+  97 006c 01DC     		bgt	.L19
+  98 006e 102B     		cmp	r3, #16
+ 123:.\Python.c    ****         #endif
+ 124:.\Python.c    ****         
+ 125:.\Python.c    ****         //seventh PWM
+ 126:.\Python.c    ****         #ifdef CY_PWM_PWM_7_H
+ 127:.\Python.c    ****             case PWM_REGISTER6: break;
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 5
+
+
+ 128:.\Python.c    ****         #endif
+ 129:.\Python.c    ****         
+ 130:.\Python.c    ****         //eighth PWM
+ 131:.\Python.c    ****         #ifdef CY_PWM_PWM_8_H
+ 132:.\Python.c    ****             case PWM_REGISTER7:  break;
+  99              		.loc 1 132 0
+ 100 0070 6BE1     		b	.L1
+ 101              	.L19:
+  37:.\Python.c    ****     {
+ 102              		.loc 1 37 0
+ 103 0072 172B     		cmp	r3, #23
+ 104 0074 00F06281 		beq	.L48
+ 105 0078 182B     		cmp	r3, #24
+ 133:.\Python.c    ****         #endif
+ 134:.\Python.c    ****         
+ 135:.\Python.c    ****         #ifdef CY_PWM_PWM_9_H
+ 136:.\Python.c    ****             case PWM_REGISTER8:  break;
+ 137:.\Python.c    ****         #endif
+ 138:.\Python.c    ****         
+ 139:.\Python.c    ****         #ifdef CY_PWM_PWM_10_H
+ 140:.\Python.c    ****             case PWM_REGISTER9:  break;
+ 141:.\Python.c    ****         #endif
+ 142:.\Python.c    ****         
+ 143:.\Python.c    ****         #ifdef CY_PWM_PWM_11_H
+ 144:.\Python.c    ****             case PWM_REGISTER10: break;
+ 145:.\Python.c    ****         #endif
+ 146:.\Python.c    ****         
+ 147:.\Python.c    ****         #ifdef CY_PWM_PWM_12_H
+ 148:.\Python.c    ****             case PWM_REGISTER11: break;
+ 149:.\Python.c    ****         #endif
+ 150:.\Python.c    ****         
+ 151:.\Python.c    ****         #ifdef CY_ADC_SAR_Seq_1_H
+ 152:.\Python.c    ****             case ANALOG_IN_REGISTER: break;
+ 153:.\Python.c    ****         #endif
+ 154:.\Python.c    ****         
+ 155:.\Python.c    ****         #ifdef CY_CAPSENSE_CSD_CapSense_1_H
+ 156:.\Python.c    ****             case CAPSENSE_REGISTER: break;
+ 106              		.loc 1 156 0
+ 107 007a 66E1     		b	.L1
+ 108              	.L17:
+  37:.\Python.c    ****     {
+ 109              		.loc 1 37 0
+ 110 007c FD2B     		cmp	r3, #253
+ 111 007e 00F05F81 		beq	.L49
+ 112 0082 FD2B     		cmp	r3, #253
+ 113 0084 5ADB     		blt	.L24
+ 114 0086 FE2B     		cmp	r3, #254
+ 115 0088 00F05C81 		beq	.L50
+ 116 008c FF2B     		cmp	r3, #255
+ 157:.\Python.c    ****         #endif
+ 158:.\Python.c    ****         
+ 159:.\Python.c    ****         case GPIO_REGISTER: 
+ 160:.\Python.c    ****             vessel->pin  = (temp_data>>1)&0x0007;
+ 161:.\Python.c    ****             vessel->port = (temp_data>>4)&0x000F;
+ 162:.\Python.c    ****             switch(cmd)
+ 163:.\Python.c    ****             {
+ 164:.\Python.c    ****                 case 0x01: vessel->dat = temp_data&0x0001; break;
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 6
+
+
+ 165:.\Python.c    ****                 case 0x03: vessel->dat = temp_data>>8&0x000F; break;
+ 166:.\Python.c    ****             }
+ 167:.\Python.c    ****             break;
+ 168:.\Python.c    ****         //TTTTtttPPPPppp
+ 169:.\Python.c    ****         case RANGE_FINDER:
+ 170:.\Python.c    ****             switch(cmd)
+ 171:.\Python.c    ****             {
+ 172:.\Python.c    ****                 case 0x00:
+ 173:.\Python.c    ****                     vessel->pin  = (temp_data)&0x0007;
+ 174:.\Python.c    ****                     vessel->port = (temp_data>>3)&0x000F;
+ 175:.\Python.c    ****                     vessel->trigpin = (temp_data>>7)&0x07;
+ 176:.\Python.c    ****                     vessel->trigport = (temp_data>>10)&0x0F;
+ 177:.\Python.c    ****                 break;
+ 178:.\Python.c    ****                 case 0x01: break;
+ 179:.\Python.c    ****                 case 0x02: vessel->delayus = (uint8)temp_data; break;
+ 180:.\Python.c    ****             }
+ 181:.\Python.c    ****         break;
+ 182:.\Python.c    ****                 
+ 183:.\Python.c    ****         
+ 184:.\Python.c    ****         #ifdef CY_SLIGHTS_StripLights_H
+ 185:.\Python.c    ****             case STRIPLIGHT_REGISTER:
+ 186:.\Python.c    ****             switch(cmd)
+ 187:.\Python.c    ****             {
+ 188:.\Python.c    ****                 case 0x02://set pixel
+ 189:.\Python.c    ****                     Python_getData(vessel);
+ 190:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 191:.\Python.c    ****                     vessel->row = vessel->addr;
+ 192:.\Python.c    ****                     vessel->column = vessel->cmd;
+ 193:.\Python.c    ****                     vessel->addr = addr;
+ 194:.\Python.c    ****                     vessel->cmd = cmd; 
+ 195:.\Python.c    ****                     break;
+ 196:.\Python.c    ****                 case 0x03://draw stripe
+ 197:.\Python.c    ****                     Python_getData(vessel);
+ 198:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 199:.\Python.c    ****                     vessel->dat = vessel->addr;
+ 200:.\Python.c    ****                     vessel->addr = addr;
+ 201:.\Python.c    ****                     vessel->cmd = cmd;
+ 202:.\Python.c    ****                     break;
+ 203:.\Python.c    ****                 case 0x05: //draw row
+ 204:.\Python.c    ****                     Python_getData(vessel);
+ 205:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 206:.\Python.c    ****                     vessel->row = vessel->addr;
+ 207:.\Python.c    ****                     vessel->addr = addr;
+ 208:.\Python.c    ****                     vessel->cmd = cmd;
+ 209:.\Python.c    ****                     break;
+ 210:.\Python.c    ****                 case 0x06: //draw column
+ 211:.\Python.c    ****                     Python_getData(vessel);
+ 212:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 213:.\Python.c    ****                     vessel->column = vessel->addr;
+ 214:.\Python.c    ****                     vessel->addr = addr;
+ 215:.\Python.c    ****                     vessel->cmd = cmd;
+ 216:.\Python.c    ****                     break;
+ 217:.\Python.c    ****                 
+ 218:.\Python.c    ****                 
+ 219:.\Python.c    ****             }
+ 220:.\Python.c    ****             break;
+ 221:.\Python.c    ****         #endif
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 7
+
+
+ 222:.\Python.c    ****         case TEST_REGISTER: break;
+ 223:.\Python.c    ****         
+ 224:.\Python.c    ****         case CHECK_BUILD: break;
+ 225:.\Python.c    ****         
+ 226:.\Python.c    ****         case RESET_ADDRESS: break;
+ 117              		.loc 1 226 0
+ 118 008e 5CE1     		b	.L1
+ 119              	.L10:
+  77:.\Python.c    ****             {
+ 120              		.loc 1 77 0
+ 121 0090 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 122 0092 042B     		cmp	r3, #4
+ 123 0094 00D0     		beq	.L28
+  92:.\Python.c    ****         #endif
+ 124              		.loc 1 92 0
+ 125 0096 58E1     		b	.L1
+ 126              	.L28:
+  80:.\Python.c    ****                     waveType = vessel->addr;
+ 127              		.loc 1 80 0
+ 128 0098 7868     		ldr	r0, [r7, #4]
+ 129 009a FFF7FEFF 		bl	Python_getData
+  81:.\Python.c    ****                     amp = vessel->cmd;
+ 130              		.loc 1 81 0
+ 131 009e 7B68     		ldr	r3, [r7, #4]
+ 132 00a0 1B78     		ldrb	r3, [r3]
+ 133 00a2 FB72     		strb	r3, [r7, #11]
+  82:.\Python.c    ****                     dcB = vessel->dat;
+ 134              		.loc 1 82 0
+ 135 00a4 7B68     		ldr	r3, [r7, #4]
+ 136 00a6 5B78     		ldrb	r3, [r3, #1]
+ 137 00a8 BB72     		strb	r3, [r7, #10]
+  83:.\Python.c    ****                     vessel->cmd = cmd;
+ 138              		.loc 1 83 0
+ 139 00aa 7B68     		ldr	r3, [r7, #4]
+ 140 00ac 5B88     		ldrh	r3, [r3, #2]
+ 141 00ae 7B72     		strb	r3, [r7, #9]
+  84:.\Python.c    ****                     vessel->addr = addr;
+ 142              		.loc 1 84 0
+ 143 00b0 7B68     		ldr	r3, [r7, #4]
+ 144 00b2 FA7B     		ldrb	r2, [r7, #15]
+ 145 00b4 5A70     		strb	r2, [r3, #1]
+  85:.\Python.c    ****                     vessel->waveType = waveType;
+ 146              		.loc 1 85 0
+ 147 00b6 7B68     		ldr	r3, [r7, #4]
+ 148 00b8 BA7B     		ldrb	r2, [r7, #14]
+ 149 00ba 1A70     		strb	r2, [r3]
+  86:.\Python.c    ****                     vessel->amp = amp;
+ 150              		.loc 1 86 0
+ 151 00bc FB7A     		ldrb	r3, [r7, #11]
+ 152 00be 03F00703 		and	r3, r3, #7
+ 153 00c2 D9B2     		uxtb	r1, r3
+ 154 00c4 7A68     		ldr	r2, [r7, #4]
+ 155 00c6 9379     		ldrb	r3, [r2, #6]
+ 156 00c8 61F30203 		bfi	r3, r1, #0, #3
+ 157 00cc 9371     		strb	r3, [r2, #6]
+  87:.\Python.c    ****                     vessel->dcB = dcB;
+ 158              		.loc 1 87 0
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 8
+
+
+ 159 00ce 7B68     		ldr	r3, [r7, #4]
+ 160 00d0 BA7A     		ldrb	r2, [r7, #10]
+ 161 00d2 DA71     		strb	r2, [r3, #7]
+  88:.\Python.c    ****                     break;
+ 162              		.loc 1 88 0
+ 163 00d4 7B68     		ldr	r3, [r7, #4]
+ 164 00d6 7A7A     		ldrb	r2, [r7, #9]
+ 165 00d8 1A72     		strb	r2, [r3, #8]
+  89:.\Python.c    ****                     
+ 166              		.loc 1 89 0
+ 167 00da 00BF     		nop
+  92:.\Python.c    ****         #endif
+ 168              		.loc 1 92 0
+ 169 00dc 35E1     		b	.L1
+ 170              	.L18:
+ 160:.\Python.c    ****             vessel->port = (temp_data>>4)&0x000F;
+ 171              		.loc 1 160 0
+ 172 00de BB89     		ldrh	r3, [r7, #12]
+ 173 00e0 5B08     		lsrs	r3, r3, #1
+ 174 00e2 9BB2     		uxth	r3, r3
+ 175 00e4 DBB2     		uxtb	r3, r3
+ 176 00e6 03F00703 		and	r3, r3, #7
+ 177 00ea D9B2     		uxtb	r1, r3
+ 178 00ec 7A68     		ldr	r2, [r7, #4]
+ 179 00ee 1379     		ldrb	r3, [r2, #4]
+ 180 00f0 61F30613 		bfi	r3, r1, #4, #3
+ 181 00f4 1371     		strb	r3, [r2, #4]
+ 161:.\Python.c    ****             switch(cmd)
+ 182              		.loc 1 161 0
+ 183 00f6 BB89     		ldrh	r3, [r7, #12]
+ 184 00f8 1B09     		lsrs	r3, r3, #4
+ 185 00fa 9BB2     		uxth	r3, r3
+ 186 00fc DBB2     		uxtb	r3, r3
+ 187 00fe 03F00F03 		and	r3, r3, #15
+ 188 0102 D9B2     		uxtb	r1, r3
+ 189 0104 7A68     		ldr	r2, [r7, #4]
+ 190 0106 1379     		ldrb	r3, [r2, #4]
+ 191 0108 61F30303 		bfi	r3, r1, #0, #4
+ 192 010c 1371     		strb	r3, [r2, #4]
+ 162:.\Python.c    ****             {
+ 193              		.loc 1 162 0
+ 194 010e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 195 0110 012B     		cmp	r3, #1
+ 196 0112 02D0     		beq	.L30
+ 197 0114 032B     		cmp	r3, #3
+ 198 0116 07D0     		beq	.L31
+ 167:.\Python.c    ****         //TTTTtttPPPPppp
+ 199              		.loc 1 167 0
+ 200 0118 17E1     		b	.L1
+ 201              	.L30:
+ 164:.\Python.c    ****                 case 0x03: vessel->dat = temp_data>>8&0x000F; break;
+ 202              		.loc 1 164 0
+ 203 011a BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 204 011c 03F00103 		and	r3, r3, #1
+ 205 0120 9AB2     		uxth	r2, r3
+ 206 0122 7B68     		ldr	r3, [r7, #4]
+ 207 0124 5A80     		strh	r2, [r3, #2]	@ movhi
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 9
+
+
+ 208 0126 08E0     		b	.L29
+ 209              	.L31:
+ 165:.\Python.c    ****             }
+ 210              		.loc 1 165 0
+ 211 0128 BB89     		ldrh	r3, [r7, #12]
+ 212 012a 1B0A     		lsrs	r3, r3, #8
+ 213 012c 9BB2     		uxth	r3, r3
+ 214 012e 03F00F03 		and	r3, r3, #15
+ 215 0132 9AB2     		uxth	r2, r3
+ 216 0134 7B68     		ldr	r3, [r7, #4]
+ 217 0136 5A80     		strh	r2, [r3, #2]	@ movhi
+ 218 0138 00BF     		nop
+ 219              	.L29:
+ 167:.\Python.c    ****         //TTTTtttPPPPppp
+ 220              		.loc 1 167 0
+ 221 013a 06E1     		b	.L1
+ 222              	.L24:
+ 170:.\Python.c    ****             {
+ 223              		.loc 1 170 0
+ 224 013c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 225 013e 012B     		cmp	r3, #1
+ 226 0140 3ED0     		beq	.L51
+ 227 0142 022B     		cmp	r3, #2
+ 228 0144 31D0     		beq	.L34
+ 229 0146 002B     		cmp	r3, #0
+ 230 0148 00D0     		beq	.L35
+ 181:.\Python.c    ****                 
+ 231              		.loc 1 181 0
+ 232 014a FEE0     		b	.L1
+ 233              	.L35:
+ 173:.\Python.c    ****                     vessel->port = (temp_data>>3)&0x000F;
+ 234              		.loc 1 173 0
+ 235 014c BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 236 014e DBB2     		uxtb	r3, r3
+ 237 0150 03F00703 		and	r3, r3, #7
+ 238 0154 D9B2     		uxtb	r1, r3
+ 239 0156 7A68     		ldr	r2, [r7, #4]
+ 240 0158 1379     		ldrb	r3, [r2, #4]
+ 241 015a 61F30613 		bfi	r3, r1, #4, #3
+ 242 015e 1371     		strb	r3, [r2, #4]
+ 174:.\Python.c    ****                     vessel->trigpin = (temp_data>>7)&0x07;
+ 243              		.loc 1 174 0
+ 244 0160 BB89     		ldrh	r3, [r7, #12]
+ 245 0162 DB08     		lsrs	r3, r3, #3
+ 246 0164 9BB2     		uxth	r3, r3
+ 247 0166 DBB2     		uxtb	r3, r3
+ 248 0168 03F00F03 		and	r3, r3, #15
+ 249 016c D9B2     		uxtb	r1, r3
+ 250 016e 7A68     		ldr	r2, [r7, #4]
+ 251 0170 1379     		ldrb	r3, [r2, #4]
+ 252 0172 61F30303 		bfi	r3, r1, #0, #4
+ 253 0176 1371     		strb	r3, [r2, #4]
+ 175:.\Python.c    ****                     vessel->trigport = (temp_data>>10)&0x0F;
+ 254              		.loc 1 175 0
+ 255 0178 BB89     		ldrh	r3, [r7, #12]
+ 256 017a DB09     		lsrs	r3, r3, #7
+ 257 017c 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 10
+
+
+ 258 017e DBB2     		uxtb	r3, r3
+ 259 0180 03F00703 		and	r3, r3, #7
+ 260 0184 D9B2     		uxtb	r1, r3
+ 261 0186 7A68     		ldr	r2, [r7, #4]
+ 262 0188 5379     		ldrb	r3, [r2, #5]
+ 263 018a 61F30613 		bfi	r3, r1, #4, #3
+ 264 018e 5371     		strb	r3, [r2, #5]
+ 176:.\Python.c    ****                 break;
+ 265              		.loc 1 176 0
+ 266 0190 BB89     		ldrh	r3, [r7, #12]
+ 267 0192 9B0A     		lsrs	r3, r3, #10
+ 268 0194 9BB2     		uxth	r3, r3
+ 269 0196 DBB2     		uxtb	r3, r3
+ 270 0198 03F00F03 		and	r3, r3, #15
+ 271 019c D9B2     		uxtb	r1, r3
+ 272 019e 7A68     		ldr	r2, [r7, #4]
+ 273 01a0 5379     		ldrb	r3, [r2, #5]
+ 274 01a2 61F30303 		bfi	r3, r1, #0, #4
+ 275 01a6 5371     		strb	r3, [r2, #5]
+ 177:.\Python.c    ****                 case 0x01: break;
+ 276              		.loc 1 177 0
+ 277 01a8 0BE0     		b	.L32
+ 278              	.L34:
+ 179:.\Python.c    ****             }
+ 279              		.loc 1 179 0
+ 280 01aa BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 281 01ac DBB2     		uxtb	r3, r3
+ 282 01ae 03F03F03 		and	r3, r3, #63
+ 283 01b2 D9B2     		uxtb	r1, r3
+ 284 01b4 7A68     		ldr	r2, [r7, #4]
+ 285 01b6 937A     		ldrb	r3, [r2, #10]
+ 286 01b8 61F30503 		bfi	r3, r1, #0, #6
+ 287 01bc 9372     		strb	r3, [r2, #10]
+ 288 01be 00E0     		b	.L32
+ 289              	.L51:
+ 178:.\Python.c    ****                 case 0x02: vessel->delayus = (uint8)temp_data; break;
+ 290              		.loc 1 178 0
+ 291 01c0 00BF     		nop
+ 292              	.L32:
+ 181:.\Python.c    ****                 
+ 293              		.loc 1 181 0 discriminator 1
+ 294 01c2 C2E0     		b	.L1
+ 295              	.L16:
+ 186:.\Python.c    ****             {
+ 296              		.loc 1 186 0
+ 297 01c4 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 298 01c6 023B     		subs	r3, r3, #2
+ 299 01c8 042B     		cmp	r3, #4
+ 300 01ca 00F2BD80 		bhi	.L52
+ 301 01ce 01A2     		adr	r2, .L38
+ 302 01d0 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 303              		.p2align 2
+ 304              	.L38:
+ 305 01d4 E9010000 		.word	.L37+1
+ 306 01d8 49020000 		.word	.L39+1
+ 307 01dc 49030000 		.word	.L52+1
+ 308 01e0 8B020000 		.word	.L40+1
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 11
+
+
+ 309 01e4 D7020000 		.word	.L41+1
+ 310              		.p2align 1
+ 311              	.L37:
+ 189:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 312              		.loc 1 189 0
+ 313 01e8 7868     		ldr	r0, [r7, #4]
+ 314 01ea FFF7FEFF 		bl	Python_getData
+ 190:.\Python.c    ****                     vessel->row = vessel->addr;
+ 315              		.loc 1 190 0
+ 316 01ee 7B68     		ldr	r3, [r7, #4]
+ 317 01f0 5B88     		ldrh	r3, [r3, #2]
+ 318 01f2 1A46     		mov	r2, r3
+ 319 01f4 BB89     		ldrh	r3, [r7, #12]
+ 320 01f6 1B04     		lsls	r3, r3, #16
+ 321 01f8 1343     		orrs	r3, r3, r2
+ 322 01fa 23F07F42 		bic	r2, r3, #-16777216
+ 323 01fe 7B68     		ldr	r3, [r7, #4]
+ 324 0200 91B2     		uxth	r1, r2
+ 325 0202 0020     		movs	r0, #0
+ 326 0204 0143     		orrs	r1, r1, r0
+ 327 0206 9981     		strh	r1, [r3, #12]	@ movhi
+ 328 0208 120C     		lsrs	r2, r2, #16
+ 329 020a D2B2     		uxtb	r2, r2
+ 330 020c 0021     		movs	r1, #0
+ 331 020e 0A43     		orrs	r2, r2, r1
+ 332 0210 9A73     		strb	r2, [r3, #14]
+ 191:.\Python.c    ****                     vessel->column = vessel->cmd;
+ 333              		.loc 1 191 0
+ 334 0212 7B68     		ldr	r3, [r7, #4]
+ 335 0214 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 336 0216 03F00703 		and	r3, r3, #7
+ 337 021a D9B2     		uxtb	r1, r3
+ 338 021c 7A68     		ldr	r2, [r7, #4]
+ 339 021e 537A     		ldrb	r3, [r2, #9]
+ 340 0220 61F3C503 		bfi	r3, r1, #3, #3
+ 341 0224 5372     		strb	r3, [r2, #9]
+ 192:.\Python.c    ****                     vessel->addr = addr;
+ 342              		.loc 1 192 0
+ 343 0226 7B68     		ldr	r3, [r7, #4]
+ 344 0228 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 345 022a 03F00703 		and	r3, r3, #7
+ 346 022e D9B2     		uxtb	r1, r3
+ 347 0230 7A68     		ldr	r2, [r7, #4]
+ 348 0232 537A     		ldrb	r3, [r2, #9]
+ 349 0234 61F30203 		bfi	r3, r1, #0, #3
+ 350 0238 5372     		strb	r3, [r2, #9]
+ 193:.\Python.c    ****                     vessel->cmd = cmd; 
+ 351              		.loc 1 193 0
+ 352 023a 7B68     		ldr	r3, [r7, #4]
+ 353 023c BA7B     		ldrb	r2, [r7, #14]
+ 354 023e 1A70     		strb	r2, [r3]
+ 194:.\Python.c    ****                     break;
+ 355              		.loc 1 194 0
+ 356 0240 7B68     		ldr	r3, [r7, #4]
+ 357 0242 FA7B     		ldrb	r2, [r7, #15]
+ 358 0244 5A70     		strb	r2, [r3, #1]
+ 195:.\Python.c    ****                 case 0x03://draw stripe
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 12
+
+
+ 359              		.loc 1 195 0
+ 360 0246 6CE0     		b	.L36
+ 361              	.L39:
+ 197:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 362              		.loc 1 197 0
+ 363 0248 7868     		ldr	r0, [r7, #4]
+ 364 024a FFF7FEFF 		bl	Python_getData
+ 198:.\Python.c    ****                     vessel->dat = vessel->addr;
+ 365              		.loc 1 198 0
+ 366 024e 7B68     		ldr	r3, [r7, #4]
+ 367 0250 5B88     		ldrh	r3, [r3, #2]
+ 368 0252 1A46     		mov	r2, r3
+ 369 0254 BB89     		ldrh	r3, [r7, #12]
+ 370 0256 1B04     		lsls	r3, r3, #16
+ 371 0258 1343     		orrs	r3, r3, r2
+ 372 025a 23F07F42 		bic	r2, r3, #-16777216
+ 373 025e 7B68     		ldr	r3, [r7, #4]
+ 374 0260 91B2     		uxth	r1, r2
+ 375 0262 0020     		movs	r0, #0
+ 376 0264 0143     		orrs	r1, r1, r0
+ 377 0266 9981     		strh	r1, [r3, #12]	@ movhi
+ 378 0268 120C     		lsrs	r2, r2, #16
+ 379 026a D2B2     		uxtb	r2, r2
+ 380 026c 0021     		movs	r1, #0
+ 381 026e 0A43     		orrs	r2, r2, r1
+ 382 0270 9A73     		strb	r2, [r3, #14]
+ 199:.\Python.c    ****                     vessel->addr = addr;
+ 383              		.loc 1 199 0
+ 384 0272 7B68     		ldr	r3, [r7, #4]
+ 385 0274 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 386 0276 9AB2     		uxth	r2, r3
+ 387 0278 7B68     		ldr	r3, [r7, #4]
+ 388 027a 5A80     		strh	r2, [r3, #2]	@ movhi
+ 200:.\Python.c    ****                     vessel->cmd = cmd;
+ 389              		.loc 1 200 0
+ 390 027c 7B68     		ldr	r3, [r7, #4]
+ 391 027e BA7B     		ldrb	r2, [r7, #14]
+ 392 0280 1A70     		strb	r2, [r3]
+ 201:.\Python.c    ****                     break;
+ 393              		.loc 1 201 0
+ 394 0282 7B68     		ldr	r3, [r7, #4]
+ 395 0284 FA7B     		ldrb	r2, [r7, #15]
+ 396 0286 5A70     		strb	r2, [r3, #1]
+ 202:.\Python.c    ****                 case 0x05: //draw row
+ 397              		.loc 1 202 0
+ 398 0288 4BE0     		b	.L36
+ 399              	.L40:
+ 204:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 400              		.loc 1 204 0
+ 401 028a 7868     		ldr	r0, [r7, #4]
+ 402 028c FFF7FEFF 		bl	Python_getData
+ 205:.\Python.c    ****                     vessel->row = vessel->addr;
+ 403              		.loc 1 205 0
+ 404 0290 7B68     		ldr	r3, [r7, #4]
+ 405 0292 5B88     		ldrh	r3, [r3, #2]
+ 406 0294 1A46     		mov	r2, r3
+ 407 0296 BB89     		ldrh	r3, [r7, #12]
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 13
+
+
+ 408 0298 1B04     		lsls	r3, r3, #16
+ 409 029a 1343     		orrs	r3, r3, r2
+ 410 029c 23F07F42 		bic	r2, r3, #-16777216
+ 411 02a0 7B68     		ldr	r3, [r7, #4]
+ 412 02a2 91B2     		uxth	r1, r2
+ 413 02a4 0020     		movs	r0, #0
+ 414 02a6 0143     		orrs	r1, r1, r0
+ 415 02a8 9981     		strh	r1, [r3, #12]	@ movhi
+ 416 02aa 120C     		lsrs	r2, r2, #16
+ 417 02ac D2B2     		uxtb	r2, r2
+ 418 02ae 0021     		movs	r1, #0
+ 419 02b0 0A43     		orrs	r2, r2, r1
+ 420 02b2 9A73     		strb	r2, [r3, #14]
+ 206:.\Python.c    ****                     vessel->addr = addr;
+ 421              		.loc 1 206 0
+ 422 02b4 7B68     		ldr	r3, [r7, #4]
+ 423 02b6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 424 02b8 03F00703 		and	r3, r3, #7
+ 425 02bc D9B2     		uxtb	r1, r3
+ 426 02be 7A68     		ldr	r2, [r7, #4]
+ 427 02c0 537A     		ldrb	r3, [r2, #9]
+ 428 02c2 61F3C503 		bfi	r3, r1, #3, #3
+ 429 02c6 5372     		strb	r3, [r2, #9]
+ 207:.\Python.c    ****                     vessel->cmd = cmd;
+ 430              		.loc 1 207 0
+ 431 02c8 7B68     		ldr	r3, [r7, #4]
+ 432 02ca BA7B     		ldrb	r2, [r7, #14]
+ 433 02cc 1A70     		strb	r2, [r3]
+ 208:.\Python.c    ****                     break;
+ 434              		.loc 1 208 0
+ 435 02ce 7B68     		ldr	r3, [r7, #4]
+ 436 02d0 FA7B     		ldrb	r2, [r7, #15]
+ 437 02d2 5A70     		strb	r2, [r3, #1]
+ 209:.\Python.c    ****                 case 0x06: //draw column
+ 438              		.loc 1 209 0
+ 439 02d4 25E0     		b	.L36
+ 440              	.L41:
+ 211:.\Python.c    ****                     vessel->color = vessel->dat|(temp_data<<16);
+ 441              		.loc 1 211 0
+ 442 02d6 7868     		ldr	r0, [r7, #4]
+ 443 02d8 FFF7FEFF 		bl	Python_getData
+ 212:.\Python.c    ****                     vessel->column = vessel->addr;
+ 444              		.loc 1 212 0
+ 445 02dc 7B68     		ldr	r3, [r7, #4]
+ 446 02de 5B88     		ldrh	r3, [r3, #2]
+ 447 02e0 1A46     		mov	r2, r3
+ 448 02e2 BB89     		ldrh	r3, [r7, #12]
+ 449 02e4 1B04     		lsls	r3, r3, #16
+ 450 02e6 1343     		orrs	r3, r3, r2
+ 451 02e8 23F07F42 		bic	r2, r3, #-16777216
+ 452 02ec 7B68     		ldr	r3, [r7, #4]
+ 453 02ee 91B2     		uxth	r1, r2
+ 454 02f0 0020     		movs	r0, #0
+ 455 02f2 0143     		orrs	r1, r1, r0
+ 456 02f4 9981     		strh	r1, [r3, #12]	@ movhi
+ 457 02f6 120C     		lsrs	r2, r2, #16
+ 458 02f8 D2B2     		uxtb	r2, r2
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 14
+
+
+ 459 02fa 0021     		movs	r1, #0
+ 460 02fc 0A43     		orrs	r2, r2, r1
+ 461 02fe 9A73     		strb	r2, [r3, #14]
+ 213:.\Python.c    ****                     vessel->addr = addr;
+ 462              		.loc 1 213 0
+ 463 0300 7B68     		ldr	r3, [r7, #4]
+ 464 0302 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 465 0304 03F00703 		and	r3, r3, #7
+ 466 0308 D9B2     		uxtb	r1, r3
+ 467 030a 7A68     		ldr	r2, [r7, #4]
+ 468 030c 537A     		ldrb	r3, [r2, #9]
+ 469 030e 61F30203 		bfi	r3, r1, #0, #3
+ 470 0312 5372     		strb	r3, [r2, #9]
+ 214:.\Python.c    ****                     vessel->cmd = cmd;
+ 471              		.loc 1 214 0
+ 472 0314 7B68     		ldr	r3, [r7, #4]
+ 473 0316 BA7B     		ldrb	r2, [r7, #14]
+ 474 0318 1A70     		strb	r2, [r3]
+ 215:.\Python.c    ****                     break;
+ 475              		.loc 1 215 0
+ 476 031a 7B68     		ldr	r3, [r7, #4]
+ 477 031c FA7B     		ldrb	r2, [r7, #15]
+ 478 031e 5A70     		strb	r2, [r3, #1]
+ 216:.\Python.c    ****                 
+ 479              		.loc 1 216 0
+ 480 0320 00BF     		nop
+ 481              	.L36:
+ 220:.\Python.c    ****         #endif
+ 482              		.loc 1 220 0
+ 483 0322 11E0     		b	.L52
+ 484              	.L42:
+ 127:.\Python.c    ****         #endif
+ 485              		.loc 1 127 0
+ 486 0324 00BF     		nop
+ 487 0326 10E0     		b	.L1
+ 488              	.L43:
+ 102:.\Python.c    ****         #endif
+ 489              		.loc 1 102 0
+ 490 0328 00BF     		nop
+ 491 032a 0EE0     		b	.L1
+ 492              	.L44:
+  66:.\Python.c    ****         #endif
+ 493              		.loc 1 66 0
+ 494 032c 00BF     		nop
+ 495 032e 0CE0     		b	.L1
+ 496              	.L45:
+ 112:.\Python.c    ****         #endif
+ 497              		.loc 1 112 0
+ 498 0330 00BF     		nop
+ 499 0332 0AE0     		b	.L1
+ 500              	.L46:
+ 107:.\Python.c    ****         #endif
+ 501              		.loc 1 107 0
+ 502 0334 00BF     		nop
+ 503 0336 08E0     		b	.L1
+ 504              	.L47:
+ 117:.\Python.c    ****         #endif
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 15
+
+
+ 505              		.loc 1 117 0
+ 506 0338 00BF     		nop
+ 507 033a 06E0     		b	.L1
+ 508              	.L48:
+ 152:.\Python.c    ****         #endif
+ 509              		.loc 1 152 0
+ 510 033c 00BF     		nop
+ 511 033e 04E0     		b	.L1
+ 512              	.L49:
+ 222:.\Python.c    ****         
+ 513              		.loc 1 222 0
+ 514 0340 00BF     		nop
+ 515 0342 02E0     		b	.L1
+ 516              	.L50:
+ 224:.\Python.c    ****         
+ 517              		.loc 1 224 0
+ 518 0344 00BF     		nop
+ 519 0346 00E0     		b	.L1
+ 520              	.L52:
+ 220:.\Python.c    ****         #endif
+ 521              		.loc 1 220 0
+ 522 0348 00BF     		nop
+ 523              	.L1:
+ 227:.\Python.c    ****         
+ 228:.\Python.c    ****     }
+ 229:.\Python.c    **** }
+ 524              		.loc 1 229 0
+ 525 034a 1037     		adds	r7, r7, #16
+ 526              		.cfi_def_cfa_offset 8
+ 527 034c BD46     		mov	sp, r7
+ 528              		.cfi_def_cfa_register 13
+ 529              		@ sp needed
+ 530 034e 80BD     		pop	{r7, pc}
+ 531              		.cfi_endproc
+ 532              	.LFE56:
+ 533              		.size	Python_parser, .-Python_parser
+ 534              		.section	.text.Python_Initialize,"ax",%progbits
+ 535              		.align	2
+ 536              		.global	Python_Initialize
+ 537              		.thumb
+ 538              		.thumb_func
+ 539              		.type	Python_Initialize, %function
+ 540              	Python_Initialize:
+ 541              	.LFB57:
+ 230:.\Python.c    **** 
+ 231:.\Python.c    **** void Python_Initialize(void)
+ 232:.\Python.c    **** {
+ 542              		.loc 1 232 0
+ 543              		.cfi_startproc
+ 544              		@ args = 0, pretend = 0, frame = 0
+ 545              		@ frame_needed = 1, uses_anonymous_args = 0
+ 546 0000 80B5     		push	{r7, lr}
+ 547              		.cfi_def_cfa_offset 8
+ 548              		.cfi_offset 7, -8
+ 549              		.cfi_offset 14, -4
+ 550 0002 00AF     		add	r7, sp, #0
+ 551              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 16
+
+
+ 233:.\Python.c    ****         #if defined(USE_SPI)
+ 234:.\Python.c    ****             SPIS_1_Start();
+ 235:.\Python.c    ****             SPIS_1_ClearFIFO();
+ 236:.\Python.c    ****             SPIS_1_ClearRxBuffer();
+ 237:.\Python.c    ****             SPIS_1_ClearTxBuffer();
+ 238:.\Python.c    ****         #elif defined(USE_I2C)
+ 239:.\Python.c    ****             I2C_1_SlaveInitReadBuf(RD_buf,  I2C_BUFFER_SIZE);
+ 240:.\Python.c    ****             I2C_1_SlaveInitWriteBuf(WR_buf,  I2C_BUFFER_SIZE);
+ 241:.\Python.c    ****             I2C_1_Start();
+ 242:.\Python.c    ****         #elif defined(USE_SERIAL)
+ 243:.\Python.c    ****             /* Start USBFS Operation with 5V operation */
+ 244:.\Python.c    ****             USBUART_Start(0u, USBUART_5V_OPERATION);
+ 552              		.loc 1 244 0
+ 553 0004 0020     		movs	r0, #0
+ 554 0006 0121     		movs	r1, #1
+ 555 0008 FFF7FEFF 		bl	USBUART_Start
+ 245:.\Python.c    **** 
+ 246:.\Python.c    ****             /* Wait for Device to enumerate */
+ 247:.\Python.c    ****             while(!USBUART_GetConfiguration());
+ 556              		.loc 1 247 0
+ 557 000c 00BF     		nop
+ 558              	.L54:
+ 559              		.loc 1 247 0 is_stmt 0 discriminator 1
+ 560 000e FFF7FEFF 		bl	USBUART_GetConfiguration
+ 561 0012 0346     		mov	r3, r0
+ 562 0014 002B     		cmp	r3, #0
+ 563 0016 FAD0     		beq	.L54
+ 248:.\Python.c    ****             /* Enumeration is done, enable OUT endpoint for receive data from Host */
+ 249:.\Python.c    ****             USBUART_CDC_Init();
+ 564              		.loc 1 249 0 is_stmt 1
+ 565 0018 FFF7FEFF 		bl	USBUART_CDC_Init
+ 250:.\Python.c    ****         #endif
+ 251:.\Python.c    **** }
+ 566              		.loc 1 251 0
+ 567 001c 80BD     		pop	{r7, pc}
+ 568              		.cfi_endproc
+ 569              	.LFE57:
+ 570              		.size	Python_Initialize, .-Python_Initialize
+ 571 001e 00BF     		.section	.text.Python_getData,"ax",%progbits
+ 572              		.align	2
+ 573              		.global	Python_getData
+ 574              		.thumb
+ 575              		.thumb_func
+ 576              		.type	Python_getData, %function
+ 577              	Python_getData:
+ 578              	.LFB58:
+ 252:.\Python.c    **** 
+ 253:.\Python.c    **** /****************************************************************************************//**
+ 254:.\Python.c    **** *  @brief receives 4 bytes of data from a Master Device, merges them into a 32 bit number, and
+ 255:.\Python.c    **** *         returns the result
+ 256:.\Python.c    **** *
+ 257:.\Python.c    **** *  @return: 32-bit number which contains all 4 bytes of transferred data, where the MSB is the 
+ 258:.\Python.c    ****             first item received.
+ 259:.\Python.c    **** *
+ 260:.\Python.c    **** *********************************************************************************************/
+ 261:.\Python.c    ****     
+ 262:.\Python.c    ****     void Python_getData(vessel_type *vessel)
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 17
+
+
+ 263:.\Python.c    ****     {   
+ 579              		.loc 1 263 0
+ 580              		.cfi_startproc
+ 581              		@ args = 0, pretend = 0, frame = 16
+ 582              		@ frame_needed = 1, uses_anonymous_args = 0
+ 583 0000 80B5     		push	{r7, lr}
+ 584              		.cfi_def_cfa_offset 8
+ 585              		.cfi_offset 7, -8
+ 586              		.cfi_offset 14, -4
+ 587 0002 84B0     		sub	sp, sp, #16
+ 588              		.cfi_def_cfa_offset 24
+ 589 0004 00AF     		add	r7, sp, #0
+ 590              		.cfi_def_cfa_register 7
+ 591 0006 7860     		str	r0, [r7, #4]
+ 264:.\Python.c    ****         uint8 addr = 0;
+ 592              		.loc 1 264 0
+ 593 0008 0023     		movs	r3, #0
+ 594 000a FB73     		strb	r3, [r7, #15]
+ 265:.\Python.c    ****         uint8 cmd = 0;
+ 595              		.loc 1 265 0
+ 596 000c 0023     		movs	r3, #0
+ 597 000e BB73     		strb	r3, [r7, #14]
+ 266:.\Python.c    ****         uint8 dat_lo = 0;
+ 598              		.loc 1 266 0
+ 599 0010 0023     		movs	r3, #0
+ 600 0012 7B73     		strb	r3, [r7, #13]
+ 267:.\Python.c    ****         uint8 dat_hi = 0;
+ 601              		.loc 1 267 0
+ 602 0014 0023     		movs	r3, #0
+ 603 0016 3B73     		strb	r3, [r7, #12]
+ 268:.\Python.c    ****         
+ 269:.\Python.c    ****         #if defined(USE_SPI)            /* SPI READ HANDLER */
+ 270:.\Python.c    ****             while(!SPIS_1_GetRxBufferSize()){/* Wait until the Rx buffer isn't empty */}
+ 271:.\Python.c    ****                 addr = SPIS_1_ReadRxData();
+ 272:.\Python.c    ****     	    while(!SPIS_1_GetRxBufferSize()){/* Wait until the Rx buffer isn't empty */}
+ 273:.\Python.c    ****     	        cmd = SPIS_1_ReadRxData();
+ 274:.\Python.c    ****     	    while(!SPIS_1_GetRxBufferSize()){/* Wait until the Rx buffer isn't empty */}
+ 275:.\Python.c    ****     	        dat_lo = SPIS_1_ReadRxData();
+ 276:.\Python.c    ****             while(!SPIS_1_GetRxBufferSize()){/* Wait until the Rx buffer isn't empty */}
+ 277:.\Python.c    ****     	        dat_hi = SPIS_1_ReadRxData();
+ 278:.\Python.c    ****       
+ 279:.\Python.c    ****         
+ 280:.\Python.c    ****         #elif defined(USE_I2C)          /* I2C READ HANDLER */
+ 281:.\Python.c    ****             while (!I2C_1_SlaveGetWriteBufSize()){}
+ 282:.\Python.c    ****             /* wait until I2C master is not writing or reading from the Buffer */
+ 283:.\Python.c    ****             while (!(I2C_1_SlaveStatus() & I2C_1_SSTAT_WR_CMPLT)){}         
+ 284:.\Python.c    ****                 uint8 byteCount = I2C_1_SlaveGetWriteBufSize(); 
+ 285:.\Python.c    ****            
+ 286:.\Python.c    ****                 addr = WR_buf[0];
+ 287:.\Python.c    ****                 cmd = WR_buf[1];
+ 288:.\Python.c    ****                 dat_lo = WR_buf[2];
+ 289:.\Python.c    ****                 dat_hi = WR_buf[3];
+ 290:.\Python.c    ****                 
+ 291:.\Python.c    ****                 I2C_1_SlaveClearWriteStatus();
+ 292:.\Python.c    ****                 I2C_1_SlaveClearWriteBuf();
+ 293:.\Python.c    ****                 
+ 294:.\Python.c    ****         
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 18
+
+
+ 295:.\Python.c    ****         #elif defined(USE_SERIAL)       /* USBUART READ HANDLER */
+ 296:.\Python.c    ****             while (!USBUART_DataIsReady()){}
+ 604              		.loc 1 296 0
+ 605 0018 00BF     		nop
+ 606              	.L56:
+ 607              		.loc 1 296 0 is_stmt 0 discriminator 1
+ 608 001a FFF7FEFF 		bl	USBUART_DataIsReady
+ 609 001e 0346     		mov	r3, r0
+ 610 0020 002B     		cmp	r3, #0
+ 611 0022 FAD0     		beq	.L56
+ 297:.\Python.c    ****             
+ 298:.\Python.c    ****             uint8 data_len = USBUART_GetAll(buffer);
+ 612              		.loc 1 298 0 is_stmt 1
+ 613 0024 1148     		ldr	r0, .L57
+ 614 0026 FFF7FEFF 		bl	USBUART_GetAll
+ 615 002a 0346     		mov	r3, r0
+ 616 002c FB72     		strb	r3, [r7, #11]
+ 299:.\Python.c    ****             
+ 300:.\Python.c    ****             addr = buffer[0];
+ 617              		.loc 1 300 0
+ 618 002e 0F4B     		ldr	r3, .L57
+ 619 0030 1B78     		ldrb	r3, [r3]
+ 620 0032 FB73     		strb	r3, [r7, #15]
+ 301:.\Python.c    ****             cmd = buffer[1];
+ 621              		.loc 1 301 0
+ 622 0034 0D4B     		ldr	r3, .L57
+ 623 0036 5B78     		ldrb	r3, [r3, #1]
+ 624 0038 BB73     		strb	r3, [r7, #14]
+ 302:.\Python.c    ****             dat_lo = buffer[2];
+ 625              		.loc 1 302 0
+ 626 003a 0C4B     		ldr	r3, .L57
+ 627 003c 9B78     		ldrb	r3, [r3, #2]
+ 628 003e 7B73     		strb	r3, [r7, #13]
+ 303:.\Python.c    ****             dat_hi = buffer[3];
+ 629              		.loc 1 303 0
+ 630 0040 0A4B     		ldr	r3, .L57
+ 631 0042 DB78     		ldrb	r3, [r3, #3]
+ 632 0044 3B73     		strb	r3, [r7, #12]
+ 304:.\Python.c    ****             
+ 305:.\Python.c    ****         #endif
+ 306:.\Python.c    ****         
+ 307:.\Python.c    ****         vessel->addr = addr;
+ 633              		.loc 1 307 0
+ 634 0046 7B68     		ldr	r3, [r7, #4]
+ 635 0048 FA7B     		ldrb	r2, [r7, #15]
+ 636 004a 1A70     		strb	r2, [r3]
+ 308:.\Python.c    ****         vessel->cmd = cmd;
+ 637              		.loc 1 308 0
+ 638 004c 7B68     		ldr	r3, [r7, #4]
+ 639 004e BA7B     		ldrb	r2, [r7, #14]
+ 640 0050 5A70     		strb	r2, [r3, #1]
+ 309:.\Python.c    ****         vessel->dat = (dat_hi<<8)|dat_lo;
+ 641              		.loc 1 309 0
+ 642 0052 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
+ 643 0054 1B02     		lsls	r3, r3, #8
+ 644 0056 9AB2     		uxth	r2, r3
+ 645 0058 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 19
+
+
+ 646 005a 9BB2     		uxth	r3, r3
+ 647 005c 1343     		orrs	r3, r3, r2
+ 648 005e 9BB2     		uxth	r3, r3
+ 649 0060 9AB2     		uxth	r2, r3
+ 650 0062 7B68     		ldr	r3, [r7, #4]
+ 651 0064 5A80     		strh	r2, [r3, #2]	@ movhi
+ 310:.\Python.c    ****     }
+ 652              		.loc 1 310 0
+ 653 0066 1037     		adds	r7, r7, #16
+ 654              		.cfi_def_cfa_offset 8
+ 655 0068 BD46     		mov	sp, r7
+ 656              		.cfi_def_cfa_register 13
+ 657              		@ sp needed
+ 658 006a 80BD     		pop	{r7, pc}
+ 659              	.L58:
+ 660              		.align	2
+ 661              	.L57:
+ 662 006c 00000000 		.word	buffer
+ 663              		.cfi_endproc
+ 664              	.LFE58:
+ 665              		.size	Python_getData, .-Python_getData
+ 666              		.section	.text.Python_sendData,"ax",%progbits
+ 667              		.align	2
+ 668              		.global	Python_sendData
+ 669              		.thumb
+ 670              		.thumb_func
+ 671              		.type	Python_sendData, %function
+ 672              	Python_sendData:
+ 673              	.LFB59:
+ 311:.\Python.c    ****     
+ 312:.\Python.c    **** /****************************************************************************************//**
+ 313:.\Python.c    **** *  @brief Writes data back to the Master device when appropriate. 
+ 314:.\Python.c    **** *
+ 315:.\Python.c    **** *  @param dat: 32-bit number which is to be sent to the Master device. It is split into 4
+ 316:.\Python.c    **** *              individual bytes, and transferred one at a time starting with the lowest byte
+ 317:.\Python.c    **** *
+ 318:.\Python.c    **** *********************************************************************************************/
+ 319:.\Python.c    ****     
+ 320:.\Python.c    ****     void Python_sendData(uint32 dat)
+ 321:.\Python.c    ****     {
+ 674              		.loc 1 321 0
+ 675              		.cfi_startproc
+ 676              		@ args = 0, pretend = 0, frame = 16
+ 677              		@ frame_needed = 1, uses_anonymous_args = 0
+ 678 0000 80B5     		push	{r7, lr}
+ 679              		.cfi_def_cfa_offset 8
+ 680              		.cfi_offset 7, -8
+ 681              		.cfi_offset 14, -4
+ 682 0002 84B0     		sub	sp, sp, #16
+ 683              		.cfi_def_cfa_offset 24
+ 684 0004 00AF     		add	r7, sp, #0
+ 685              		.cfi_def_cfa_register 7
+ 686 0006 7860     		str	r0, [r7, #4]
+ 322:.\Python.c    ****             uint8 out_hi = (dat & 0xFF000000)>>24;
+ 687              		.loc 1 322 0
+ 688 0008 7B68     		ldr	r3, [r7, #4]
+ 689 000a 1B0E     		lsrs	r3, r3, #24
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 20
+
+
+ 690 000c FB73     		strb	r3, [r7, #15]
+ 323:.\Python.c    ****             uint8 out_mid_hi = (dat & 0x00FF0000)>>16;
+ 691              		.loc 1 323 0
+ 692 000e 7B68     		ldr	r3, [r7, #4]
+ 693 0010 03F47F03 		and	r3, r3, #16711680
+ 694 0014 1B0C     		lsrs	r3, r3, #16
+ 695 0016 BB73     		strb	r3, [r7, #14]
+ 324:.\Python.c    ****             uint8 out_mid_lo = (dat & 0x0000FF00)>>8;
+ 696              		.loc 1 324 0
+ 697 0018 7B68     		ldr	r3, [r7, #4]
+ 698 001a 03F47F43 		and	r3, r3, #65280
+ 699 001e 1B0A     		lsrs	r3, r3, #8
+ 700 0020 7B73     		strb	r3, [r7, #13]
+ 325:.\Python.c    ****             uint8 out_lo = dat & 0x000000FF;
+ 701              		.loc 1 325 0
+ 702 0022 7B68     		ldr	r3, [r7, #4]
+ 703 0024 3B73     		strb	r3, [r7, #12]
+ 326:.\Python.c    ****         
+ 327:.\Python.c    ****         
+ 328:.\Python.c    ****         #if defined(USE_SPI)            /* SPI WRITE HANDLER */
+ 329:.\Python.c    ****             SPIS_1_ClearTxBuffer();
+ 330:.\Python.c    ****             SPIS_1_ClearFIFO();    //Clear the SPI buffers
+ 331:.\Python.c    ****             SPIS_1_ClearRxBuffer();
+ 332:.\Python.c    ****             
+ 333:.\Python.c    ****             uint8 SPI_buffer[3] = {out_mid_lo, out_mid_hi, out_hi};
+ 334:.\Python.c    ****             SPIS_1_WriteTxDataZero(out_lo);
+ 335:.\Python.c    ****             SPIS_1_PutArray(SPI_buffer, 3);
+ 336:.\Python.c    ****            
+ 337:.\Python.c    ****             while(!(SPIS_1_ReadTxStatus() & SPIS_1_STS_SPI_DONE)); //Wait until Tx buffer empties  
+ 338:.\Python.c    ****             
+ 339:.\Python.c    ****         #elif defined(USE_I2C)          /* I2C WRITE HANDLER */
+ 340:.\Python.c    ****             while (I2C_1_SlaveGetReadBufSize()){}
+ 341:.\Python.c    ****             RD_buf[0] = out_lo;
+ 342:.\Python.c    ****             RD_buf[1] = out_mid_lo;
+ 343:.\Python.c    ****             RD_buf[2] = out_mid_hi;
+ 344:.\Python.c    ****             RD_buf[3] = out_hi;
+ 345:.\Python.c    ****             
+ 346:.\Python.c    ****             /*Wait until read is complete*/
+ 347:.\Python.c    ****             while (0u == (I2C_1_SlaveStatus() & I2C_1_SSTAT_RD_CMPLT)){}
+ 348:.\Python.c    ****                 I2C_1_SlaveClearReadBuf();          /* Clear slave read buffer and status */
+ 349:.\Python.c    ****                 (void) I2C_1_SlaveClearReadStatus();
+ 350:.\Python.c    ****                 
+ 351:.\Python.c    ****         #elif defined(USE_SERIAL)      /* USBUART WRITE HANDLER */
+ 352:.\Python.c    ****             
+ 353:.\Python.c    ****             while(!USBUART_CDCIsReady()){}
+ 704              		.loc 1 353 0
+ 705 0026 00BF     		nop
+ 706              	.L60:
+ 707              		.loc 1 353 0 is_stmt 0 discriminator 1
+ 708 0028 FFF7FEFF 		bl	USBUART_CDCIsReady
+ 709 002c 0346     		mov	r3, r0
+ 710 002e 002B     		cmp	r3, #0
+ 711 0030 FAD0     		beq	.L60
+ 354:.\Python.c    ****             uint8 dat_out[4] = {out_lo, out_mid_lo, out_mid_hi, out_hi};
+ 712              		.loc 1 354 0 is_stmt 1
+ 713 0032 3B7B     		ldrb	r3, [r7, #12]
+ 714 0034 3B72     		strb	r3, [r7, #8]
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 21
+
+
+ 715 0036 7B7B     		ldrb	r3, [r7, #13]
+ 716 0038 7B72     		strb	r3, [r7, #9]
+ 717 003a BB7B     		ldrb	r3, [r7, #14]
+ 718 003c BB72     		strb	r3, [r7, #10]
+ 719 003e FB7B     		ldrb	r3, [r7, #15]
+ 720 0040 FB72     		strb	r3, [r7, #11]
+ 355:.\Python.c    ****             USBUART_PutData(dat_out, 4);
+ 721              		.loc 1 355 0
+ 722 0042 07F10803 		add	r3, r7, #8
+ 723 0046 1846     		mov	r0, r3
+ 724 0048 0421     		movs	r1, #4
+ 725 004a FFF7FEFF 		bl	USBUART_PutData
+ 356:.\Python.c    ****             
+ 357:.\Python.c    ****         #endif
+ 358:.\Python.c    ****         
+ 359:.\Python.c    ****     }
+ 726              		.loc 1 359 0
+ 727 004e 1037     		adds	r7, r7, #16
+ 728              		.cfi_def_cfa_offset 8
+ 729 0050 BD46     		mov	sp, r7
+ 730              		.cfi_def_cfa_register 13
+ 731              		@ sp needed
+ 732 0052 80BD     		pop	{r7, pc}
+ 733              		.cfi_endproc
+ 734              	.LFE59:
+ 735              		.size	Python_sendData, .-Python_sendData
+ 736              		.text
+ 737              	.Letext0:
+ 738              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 739              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\3.3\\psoc creator\\import\\gnu\\arm\\4.9.
+ 740              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 741              		.file 5 ".\\mem1.h"
+ 742              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ 743              		.section	.debug_info,"",%progbits
+ 744              	.Ldebug_info0:
+ 745 0000 48030000 		.4byte	0x348
+ 746 0004 0400     		.2byte	0x4
+ 747 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 748 000a 04       		.byte	0x4
+ 749 000b 01       		.uleb128 0x1
+ 750 000c 1F000000 		.4byte	.LASF42
+ 751 0010 01       		.byte	0x1
+ 752 0011 A8020000 		.4byte	.LASF43
+ 753 0015 3B020000 		.4byte	.LASF44
+ 754 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 755 001d 00000000 		.4byte	0
+ 756 0021 00000000 		.4byte	.Ldebug_line0
+ 757 0025 02       		.uleb128 0x2
+ 758 0026 01       		.byte	0x1
+ 759 0027 06       		.byte	0x6
+ 760 0028 1C020000 		.4byte	.LASF0
+ 761 002c 02       		.uleb128 0x2
+ 762 002d 01       		.byte	0x1
+ 763 002e 08       		.byte	0x8
+ 764 002f E6000000 		.4byte	.LASF1
+ 765 0033 02       		.uleb128 0x2
+ 766 0034 02       		.byte	0x2
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 22
+
+
+ 767 0035 05       		.byte	0x5
+ 768 0036 DB010000 		.4byte	.LASF2
+ 769 003a 02       		.uleb128 0x2
+ 770 003b 02       		.byte	0x2
+ 771 003c 07       		.byte	0x7
+ 772 003d 28020000 		.4byte	.LASF3
+ 773 0041 03       		.uleb128 0x3
+ 774 0042 00000000 		.4byte	.LASF9
+ 775 0046 02       		.byte	0x2
+ 776 0047 3F       		.byte	0x3f
+ 777 0048 4C000000 		.4byte	0x4c
+ 778 004c 02       		.uleb128 0x2
+ 779 004d 04       		.byte	0x4
+ 780 004e 05       		.byte	0x5
+ 781 004f 13020000 		.4byte	.LASF4
+ 782 0053 02       		.uleb128 0x2
+ 783 0054 04       		.byte	0x4
+ 784 0055 07       		.byte	0x7
+ 785 0056 FD000000 		.4byte	.LASF5
+ 786 005a 02       		.uleb128 0x2
+ 787 005b 08       		.byte	0x8
+ 788 005c 05       		.byte	0x5
+ 789 005d C3010000 		.4byte	.LASF6
+ 790 0061 02       		.uleb128 0x2
+ 791 0062 08       		.byte	0x8
+ 792 0063 07       		.byte	0x7
+ 793 0064 78010000 		.4byte	.LASF7
+ 794 0068 04       		.uleb128 0x4
+ 795 0069 04       		.byte	0x4
+ 796 006a 05       		.byte	0x5
+ 797 006b 696E7400 		.ascii	"int\000"
+ 798 006f 02       		.uleb128 0x2
+ 799 0070 04       		.byte	0x4
+ 800 0071 07       		.byte	0x7
+ 801 0072 6B010000 		.4byte	.LASF8
+ 802 0076 03       		.uleb128 0x3
+ 803 0077 AB010000 		.4byte	.LASF10
+ 804 007b 03       		.byte	0x3
+ 805 007c 2C       		.byte	0x2c
+ 806 007d 41000000 		.4byte	0x41
+ 807 0081 03       		.uleb128 0x3
+ 808 0082 EC010000 		.4byte	.LASF11
+ 809 0086 04       		.byte	0x4
+ 810 0087 A1       		.byte	0xa1
+ 811 0088 2C000000 		.4byte	0x2c
+ 812 008c 03       		.uleb128 0x3
+ 813 008d 5D010000 		.4byte	.LASF12
+ 814 0091 04       		.byte	0x4
+ 815 0092 A2       		.byte	0xa2
+ 816 0093 3A000000 		.4byte	0x3a
+ 817 0097 03       		.uleb128 0x3
+ 818 0098 64010000 		.4byte	.LASF13
+ 819 009c 04       		.byte	0x4
+ 820 009d A3       		.byte	0xa3
+ 821 009e 53000000 		.4byte	0x53
+ 822 00a2 02       		.uleb128 0x2
+ 823 00a3 04       		.byte	0x4
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 23
+
+
+ 824 00a4 04       		.byte	0x4
+ 825 00a5 E0000000 		.4byte	.LASF14
+ 826 00a9 02       		.uleb128 0x2
+ 827 00aa 08       		.byte	0x8
+ 828 00ab 04       		.byte	0x4
+ 829 00ac 49010000 		.4byte	.LASF15
+ 830 00b0 02       		.uleb128 0x2
+ 831 00b1 01       		.byte	0x1
+ 832 00b2 08       		.byte	0x8
+ 833 00b3 D1010000 		.4byte	.LASF16
+ 834 00b7 02       		.uleb128 0x2
+ 835 00b8 04       		.byte	0x4
+ 836 00b9 07       		.byte	0x7
+ 837 00ba B3010000 		.4byte	.LASF17
+ 838 00be 05       		.uleb128 0x5
+ 839 00bf 81000000 		.4byte	0x81
+ 840 00c3 CE000000 		.4byte	0xce
+ 841 00c7 06       		.uleb128 0x6
+ 842 00c8 B7000000 		.4byte	0xb7
+ 843 00cc 03       		.byte	0x3
+ 844 00cd 00       		.byte	0
+ 845 00ce 07       		.uleb128 0x7
+ 846 00cf AD000000 		.4byte	.LASF45
+ 847 00d3 10       		.byte	0x10
+ 848 00d4 05       		.byte	0x5
+ 849 00d5 1A       		.byte	0x1a
+ 850 00d6 AD010000 		.4byte	0x1ad
+ 851 00da 08       		.uleb128 0x8
+ 852 00db 13000000 		.4byte	.LASF18
+ 853 00df 05       		.byte	0x5
+ 854 00e0 1B       		.byte	0x1b
+ 855 00e1 81000000 		.4byte	0x81
+ 856 00e5 01       		.byte	0x1
+ 857 00e6 08       		.byte	0x8
+ 858 00e7 00       		.byte	0
+ 859 00e8 00       		.byte	0
+ 860 00e9 09       		.uleb128 0x9
+ 861 00ea 636D6400 		.ascii	"cmd\000"
+ 862 00ee 05       		.byte	0x5
+ 863 00ef 1C       		.byte	0x1c
+ 864 00f0 81000000 		.4byte	0x81
+ 865 00f4 01       		.byte	0x1
+ 866 00f5 08       		.byte	0x8
+ 867 00f6 00       		.byte	0
+ 868 00f7 01       		.byte	0x1
+ 869 00f8 09       		.uleb128 0x9
+ 870 00f9 64617400 		.ascii	"dat\000"
+ 871 00fd 05       		.byte	0x5
+ 872 00fe 1D       		.byte	0x1d
+ 873 00ff 8C000000 		.4byte	0x8c
+ 874 0103 02       		.byte	0x2
+ 875 0104 10       		.byte	0x10
+ 876 0105 00       		.byte	0
+ 877 0106 02       		.byte	0x2
+ 878 0107 08       		.uleb128 0x8
+ 879 0108 D6010000 		.4byte	.LASF19
+ 880 010c 05       		.byte	0x5
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 24
+
+
+ 881 010d 1E       		.byte	0x1e
+ 882 010e 81000000 		.4byte	0x81
+ 883 0112 01       		.byte	0x1
+ 884 0113 04       		.byte	0x4
+ 885 0114 04       		.byte	0x4
+ 886 0115 04       		.byte	0x4
+ 887 0116 09       		.uleb128 0x9
+ 888 0117 70696E00 		.ascii	"pin\000"
+ 889 011b 05       		.byte	0x5
+ 890 011c 1F       		.byte	0x1f
+ 891 011d 81000000 		.4byte	0x81
+ 892 0121 01       		.byte	0x1
+ 893 0122 03       		.byte	0x3
+ 894 0123 01       		.byte	0x1
+ 895 0124 04       		.byte	0x4
+ 896 0125 08       		.uleb128 0x8
+ 897 0126 F4000000 		.4byte	.LASF20
+ 898 012a 05       		.byte	0x5
+ 899 012b 20       		.byte	0x20
+ 900 012c 81000000 		.4byte	0x81
+ 901 0130 01       		.byte	0x1
+ 902 0131 04       		.byte	0x4
+ 903 0132 04       		.byte	0x4
+ 904 0133 05       		.byte	0x5
+ 905 0134 08       		.uleb128 0x8
+ 906 0135 A0020000 		.4byte	.LASF21
+ 907 0139 05       		.byte	0x5
+ 908 013a 21       		.byte	0x21
+ 909 013b 81000000 		.4byte	0x81
+ 910 013f 01       		.byte	0x1
+ 911 0140 03       		.byte	0x3
+ 912 0141 01       		.byte	0x1
+ 913 0142 05       		.byte	0x5
+ 914 0143 08       		.uleb128 0x8
+ 915 0144 0A000000 		.4byte	.LASF22
+ 916 0148 05       		.byte	0x5
+ 917 0149 22       		.byte	0x22
+ 918 014a 81000000 		.4byte	0x81
+ 919 014e 01       		.byte	0x1
+ 920 014f 03       		.byte	0x3
+ 921 0150 05       		.byte	0x5
+ 922 0151 06       		.byte	0x6
+ 923 0152 09       		.uleb128 0x9
+ 924 0153 616D7000 		.ascii	"amp\000"
+ 925 0157 05       		.byte	0x5
+ 926 0158 23       		.byte	0x23
+ 927 0159 81000000 		.4byte	0x81
+ 928 015d 01       		.byte	0x1
+ 929 015e 08       		.byte	0x8
+ 930 015f 00       		.byte	0
+ 931 0160 07       		.byte	0x7
+ 932 0161 09       		.uleb128 0x9
+ 933 0162 64634200 		.ascii	"dcB\000"
+ 934 0166 05       		.byte	0x5
+ 935 0167 24       		.byte	0x24
+ 936 0168 81000000 		.4byte	0x81
+ 937 016c 01       		.byte	0x1
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 25
+
+
+ 938 016d 08       		.byte	0x8
+ 939 016e 00       		.byte	0
+ 940 016f 08       		.byte	0x8
+ 941 0170 08       		.uleb128 0x8
+ 942 0171 C9000000 		.4byte	.LASF23
+ 943 0175 05       		.byte	0x5
+ 944 0176 25       		.byte	0x25
+ 945 0177 81000000 		.4byte	0x81
+ 946 017b 01       		.byte	0x1
+ 947 017c 03       		.byte	0x3
+ 948 017d 05       		.byte	0x5
+ 949 017e 09       		.byte	0x9
+ 950 017f 09       		.uleb128 0x9
+ 951 0180 726F7700 		.ascii	"row\000"
+ 952 0184 05       		.byte	0x5
+ 953 0185 26       		.byte	0x26
+ 954 0186 81000000 		.4byte	0x81
+ 955 018a 01       		.byte	0x1
+ 956 018b 03       		.byte	0x3
+ 957 018c 02       		.byte	0x2
+ 958 018d 09       		.byte	0x9
+ 959 018e 08       		.uleb128 0x8
+ 960 018f 41010000 		.4byte	.LASF24
+ 961 0193 05       		.byte	0x5
+ 962 0194 27       		.byte	0x27
+ 963 0195 81000000 		.4byte	0x81
+ 964 0199 01       		.byte	0x1
+ 965 019a 06       		.byte	0x6
+ 966 019b 02       		.byte	0x2
+ 967 019c 0A       		.byte	0xa
+ 968 019d 08       		.uleb128 0x8
+ 969 019e 57010000 		.4byte	.LASF25
+ 970 01a2 05       		.byte	0x5
+ 971 01a3 28       		.byte	0x28
+ 972 01a4 97000000 		.4byte	0x97
+ 973 01a8 04       		.byte	0x4
+ 974 01a9 18       		.byte	0x18
+ 975 01aa 08       		.byte	0x8
+ 976 01ab 0C       		.byte	0xc
+ 977 01ac 00       		.byte	0
+ 978 01ad 03       		.uleb128 0x3
+ 979 01ae 1D010000 		.4byte	.LASF26
+ 980 01b2 05       		.byte	0x5
+ 981 01b3 29       		.byte	0x29
+ 982 01b4 CE000000 		.4byte	0xce
+ 983 01b8 0A       		.uleb128 0xa
+ 984 01b9 0F010000 		.4byte	.LASF28
+ 985 01bd 01       		.byte	0x1
+ 986 01be 1C       		.byte	0x1c
+ 987 01bf 00000000 		.4byte	.LFB56
+ 988 01c3 50030000 		.4byte	.LFE56-.LFB56
+ 989 01c7 01       		.uleb128 0x1
+ 990 01c8 9C       		.byte	0x9c
+ 991 01c9 30020000 		.4byte	0x230
+ 992 01cd 0B       		.uleb128 0xb
+ 993 01ce 50010000 		.4byte	.LASF30
+ 994 01d2 01       		.byte	0x1
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 26
+
+
+ 995 01d3 1C       		.byte	0x1c
+ 996 01d4 30020000 		.4byte	0x230
+ 997 01d8 02       		.uleb128 0x2
+ 998 01d9 91       		.byte	0x91
+ 999 01da 6C       		.sleb128 -20
+ 1000 01db 0C       		.uleb128 0xc
+ 1001 01dc 636D6400 		.ascii	"cmd\000"
+ 1002 01e0 01       		.byte	0x1
+ 1003 01e1 1E       		.byte	0x1e
+ 1004 01e2 81000000 		.4byte	0x81
+ 1005 01e6 02       		.uleb128 0x2
+ 1006 01e7 91       		.byte	0x91
+ 1007 01e8 77       		.sleb128 -9
+ 1008 01e9 0D       		.uleb128 0xd
+ 1009 01ea 13000000 		.4byte	.LASF18
+ 1010 01ee 01       		.byte	0x1
+ 1011 01ef 1F       		.byte	0x1f
+ 1012 01f0 81000000 		.4byte	0x81
+ 1013 01f4 02       		.uleb128 0x2
+ 1014 01f5 91       		.byte	0x91
+ 1015 01f6 76       		.sleb128 -10
+ 1016 01f7 0D       		.uleb128 0xd
+ 1017 01f8 8F010000 		.4byte	.LASF27
+ 1018 01fc 01       		.byte	0x1
+ 1019 01fd 20       		.byte	0x20
+ 1020 01fe 8C000000 		.4byte	0x8c
+ 1021 0202 02       		.uleb128 0x2
+ 1022 0203 91       		.byte	0x91
+ 1023 0204 74       		.sleb128 -12
+ 1024 0205 0D       		.uleb128 0xd
+ 1025 0206 0A000000 		.4byte	.LASF22
+ 1026 020a 01       		.byte	0x1
+ 1027 020b 21       		.byte	0x21
+ 1028 020c 81000000 		.4byte	0x81
+ 1029 0210 02       		.uleb128 0x2
+ 1030 0211 91       		.byte	0x91
+ 1031 0212 73       		.sleb128 -13
+ 1032 0213 0C       		.uleb128 0xc
+ 1033 0214 616D7000 		.ascii	"amp\000"
+ 1034 0218 01       		.byte	0x1
+ 1035 0219 22       		.byte	0x22
+ 1036 021a 81000000 		.4byte	0x81
+ 1037 021e 02       		.uleb128 0x2
+ 1038 021f 91       		.byte	0x91
+ 1039 0220 72       		.sleb128 -14
+ 1040 0221 0C       		.uleb128 0xc
+ 1041 0222 64634200 		.ascii	"dcB\000"
+ 1042 0226 01       		.byte	0x1
+ 1043 0227 23       		.byte	0x23
+ 1044 0228 81000000 		.4byte	0x81
+ 1045 022c 02       		.uleb128 0x2
+ 1046 022d 91       		.byte	0x91
+ 1047 022e 71       		.sleb128 -15
+ 1048 022f 00       		.byte	0
+ 1049 0230 0E       		.uleb128 0xe
+ 1050 0231 04       		.byte	0x4
+ 1051 0232 AD010000 		.4byte	0x1ad
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 27
+
+
+ 1052 0236 0F       		.uleb128 0xf
+ 1053 0237 99010000 		.4byte	.LASF46
+ 1054 023b 01       		.byte	0x1
+ 1055 023c E7       		.byte	0xe7
+ 1056 023d 00000000 		.4byte	.LFB57
+ 1057 0241 1E000000 		.4byte	.LFE57-.LFB57
+ 1058 0245 01       		.uleb128 0x1
+ 1059 0246 9C       		.byte	0x9c
+ 1060 0247 10       		.uleb128 0x10
+ 1061 0248 F2010000 		.4byte	.LASF29
+ 1062 024c 01       		.byte	0x1
+ 1063 024d 0601     		.2byte	0x106
+ 1064 024f 00000000 		.4byte	.LFB58
+ 1065 0253 70000000 		.4byte	.LFE58-.LFB58
+ 1066 0257 01       		.uleb128 0x1
+ 1067 0258 9C       		.byte	0x9c
+ 1068 0259 B8020000 		.4byte	0x2b8
+ 1069 025d 11       		.uleb128 0x11
+ 1070 025e 50010000 		.4byte	.LASF30
+ 1071 0262 01       		.byte	0x1
+ 1072 0263 0601     		.2byte	0x106
+ 1073 0265 30020000 		.4byte	0x230
+ 1074 0269 02       		.uleb128 0x2
+ 1075 026a 91       		.byte	0x91
+ 1076 026b 6C       		.sleb128 -20
+ 1077 026c 12       		.uleb128 0x12
+ 1078 026d 13000000 		.4byte	.LASF18
+ 1079 0271 01       		.byte	0x1
+ 1080 0272 0801     		.2byte	0x108
+ 1081 0274 81000000 		.4byte	0x81
+ 1082 0278 02       		.uleb128 0x2
+ 1083 0279 91       		.byte	0x91
+ 1084 027a 77       		.sleb128 -9
+ 1085 027b 13       		.uleb128 0x13
+ 1086 027c 636D6400 		.ascii	"cmd\000"
+ 1087 0280 01       		.byte	0x1
+ 1088 0281 0901     		.2byte	0x109
+ 1089 0283 81000000 		.4byte	0x81
+ 1090 0287 02       		.uleb128 0x2
+ 1091 0288 91       		.byte	0x91
+ 1092 0289 76       		.sleb128 -10
+ 1093 028a 12       		.uleb128 0x12
+ 1094 028b 0C020000 		.4byte	.LASF31
+ 1095 028f 01       		.byte	0x1
+ 1096 0290 0A01     		.2byte	0x10a
+ 1097 0292 81000000 		.4byte	0x81
+ 1098 0296 02       		.uleb128 0x2
+ 1099 0297 91       		.byte	0x91
+ 1100 0298 75       		.sleb128 -11
+ 1101 0299 12       		.uleb128 0x12
+ 1102 029a BC010000 		.4byte	.LASF32
+ 1103 029e 01       		.byte	0x1
+ 1104 029f 0B01     		.2byte	0x10b
+ 1105 02a1 81000000 		.4byte	0x81
+ 1106 02a5 02       		.uleb128 0x2
+ 1107 02a6 91       		.byte	0x91
+ 1108 02a7 74       		.sleb128 -12
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 28
+
+
+ 1109 02a8 12       		.uleb128 0x12
+ 1110 02a9 C0000000 		.4byte	.LASF33
+ 1111 02ad 01       		.byte	0x1
+ 1112 02ae 2A01     		.2byte	0x12a
+ 1113 02b0 81000000 		.4byte	0x81
+ 1114 02b4 02       		.uleb128 0x2
+ 1115 02b5 91       		.byte	0x91
+ 1116 02b6 73       		.sleb128 -13
+ 1117 02b7 00       		.byte	0
+ 1118 02b8 10       		.uleb128 0x10
+ 1119 02b9 D0000000 		.4byte	.LASF34
+ 1120 02bd 01       		.byte	0x1
+ 1121 02be 4001     		.2byte	0x140
+ 1122 02c0 00000000 		.4byte	.LFB59
+ 1123 02c4 54000000 		.4byte	.LFE59-.LFB59
+ 1124 02c8 01       		.uleb128 0x1
+ 1125 02c9 9C       		.byte	0x9c
+ 1126 02ca 29030000 		.4byte	0x329
+ 1127 02ce 14       		.uleb128 0x14
+ 1128 02cf 64617400 		.ascii	"dat\000"
+ 1129 02d3 01       		.byte	0x1
+ 1130 02d4 4001     		.2byte	0x140
+ 1131 02d6 97000000 		.4byte	0x97
+ 1132 02da 02       		.uleb128 0x2
+ 1133 02db 91       		.byte	0x91
+ 1134 02dc 6C       		.sleb128 -20
+ 1135 02dd 12       		.uleb128 0x12
+ 1136 02de B3020000 		.4byte	.LASF35
+ 1137 02e2 01       		.byte	0x1
+ 1138 02e3 4201     		.2byte	0x142
+ 1139 02e5 81000000 		.4byte	0x81
+ 1140 02e9 02       		.uleb128 0x2
+ 1141 02ea 91       		.byte	0x91
+ 1142 02eb 77       		.sleb128 -9
+ 1143 02ec 12       		.uleb128 0x12
+ 1144 02ed 29010000 		.4byte	.LASF36
+ 1145 02f1 01       		.byte	0x1
+ 1146 02f2 4301     		.2byte	0x143
+ 1147 02f4 81000000 		.4byte	0x81
+ 1148 02f8 02       		.uleb128 0x2
+ 1149 02f9 91       		.byte	0x91
+ 1150 02fa 76       		.sleb128 -10
+ 1151 02fb 12       		.uleb128 0x12
+ 1152 02fc 01020000 		.4byte	.LASF37
+ 1153 0300 01       		.byte	0x1
+ 1154 0301 4401     		.2byte	0x144
+ 1155 0303 81000000 		.4byte	0x81
+ 1156 0307 02       		.uleb128 0x2
+ 1157 0308 91       		.byte	0x91
+ 1158 0309 75       		.sleb128 -11
+ 1159 030a 12       		.uleb128 0x12
+ 1160 030b 18000000 		.4byte	.LASF38
+ 1161 030f 01       		.byte	0x1
+ 1162 0310 4501     		.2byte	0x145
+ 1163 0312 81000000 		.4byte	0x81
+ 1164 0316 02       		.uleb128 0x2
+ 1165 0317 91       		.byte	0x91
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 29
+
+
+ 1166 0318 74       		.sleb128 -12
+ 1167 0319 12       		.uleb128 0x12
+ 1168 031a B8000000 		.4byte	.LASF39
+ 1169 031e 01       		.byte	0x1
+ 1170 031f 6201     		.2byte	0x162
+ 1171 0321 BE000000 		.4byte	0xbe
+ 1172 0325 02       		.uleb128 0x2
+ 1173 0326 91       		.byte	0x91
+ 1174 0327 70       		.sleb128 -16
+ 1175 0328 00       		.byte	0
+ 1176 0329 15       		.uleb128 0x15
+ 1177 032a 34010000 		.4byte	.LASF40
+ 1178 032e 06       		.byte	0x6
+ 1179 032f 1606     		.2byte	0x616
+ 1180 0331 35030000 		.4byte	0x335
+ 1181 0335 16       		.uleb128 0x16
+ 1182 0336 76000000 		.4byte	0x76
+ 1183 033a 17       		.uleb128 0x17
+ 1184 033b E5010000 		.4byte	.LASF41
+ 1185 033f 01       		.byte	0x1
+ 1186 0340 19       		.byte	0x19
+ 1187 0341 BE000000 		.4byte	0xbe
+ 1188 0345 05       		.uleb128 0x5
+ 1189 0346 03       		.byte	0x3
+ 1190 0347 00000000 		.4byte	buffer
+ 1191 034b 00       		.byte	0
+ 1192              		.section	.debug_abbrev,"",%progbits
+ 1193              	.Ldebug_abbrev0:
+ 1194 0000 01       		.uleb128 0x1
+ 1195 0001 11       		.uleb128 0x11
+ 1196 0002 01       		.byte	0x1
+ 1197 0003 25       		.uleb128 0x25
+ 1198 0004 0E       		.uleb128 0xe
+ 1199 0005 13       		.uleb128 0x13
+ 1200 0006 0B       		.uleb128 0xb
+ 1201 0007 03       		.uleb128 0x3
+ 1202 0008 0E       		.uleb128 0xe
+ 1203 0009 1B       		.uleb128 0x1b
+ 1204 000a 0E       		.uleb128 0xe
+ 1205 000b 55       		.uleb128 0x55
+ 1206 000c 17       		.uleb128 0x17
+ 1207 000d 11       		.uleb128 0x11
+ 1208 000e 01       		.uleb128 0x1
+ 1209 000f 10       		.uleb128 0x10
+ 1210 0010 17       		.uleb128 0x17
+ 1211 0011 00       		.byte	0
+ 1212 0012 00       		.byte	0
+ 1213 0013 02       		.uleb128 0x2
+ 1214 0014 24       		.uleb128 0x24
+ 1215 0015 00       		.byte	0
+ 1216 0016 0B       		.uleb128 0xb
+ 1217 0017 0B       		.uleb128 0xb
+ 1218 0018 3E       		.uleb128 0x3e
+ 1219 0019 0B       		.uleb128 0xb
+ 1220 001a 03       		.uleb128 0x3
+ 1221 001b 0E       		.uleb128 0xe
+ 1222 001c 00       		.byte	0
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 30
+
+
+ 1223 001d 00       		.byte	0
+ 1224 001e 03       		.uleb128 0x3
+ 1225 001f 16       		.uleb128 0x16
+ 1226 0020 00       		.byte	0
+ 1227 0021 03       		.uleb128 0x3
+ 1228 0022 0E       		.uleb128 0xe
+ 1229 0023 3A       		.uleb128 0x3a
+ 1230 0024 0B       		.uleb128 0xb
+ 1231 0025 3B       		.uleb128 0x3b
+ 1232 0026 0B       		.uleb128 0xb
+ 1233 0027 49       		.uleb128 0x49
+ 1234 0028 13       		.uleb128 0x13
+ 1235 0029 00       		.byte	0
+ 1236 002a 00       		.byte	0
+ 1237 002b 04       		.uleb128 0x4
+ 1238 002c 24       		.uleb128 0x24
+ 1239 002d 00       		.byte	0
+ 1240 002e 0B       		.uleb128 0xb
+ 1241 002f 0B       		.uleb128 0xb
+ 1242 0030 3E       		.uleb128 0x3e
+ 1243 0031 0B       		.uleb128 0xb
+ 1244 0032 03       		.uleb128 0x3
+ 1245 0033 08       		.uleb128 0x8
+ 1246 0034 00       		.byte	0
+ 1247 0035 00       		.byte	0
+ 1248 0036 05       		.uleb128 0x5
+ 1249 0037 01       		.uleb128 0x1
+ 1250 0038 01       		.byte	0x1
+ 1251 0039 49       		.uleb128 0x49
+ 1252 003a 13       		.uleb128 0x13
+ 1253 003b 01       		.uleb128 0x1
+ 1254 003c 13       		.uleb128 0x13
+ 1255 003d 00       		.byte	0
+ 1256 003e 00       		.byte	0
+ 1257 003f 06       		.uleb128 0x6
+ 1258 0040 21       		.uleb128 0x21
+ 1259 0041 00       		.byte	0
+ 1260 0042 49       		.uleb128 0x49
+ 1261 0043 13       		.uleb128 0x13
+ 1262 0044 2F       		.uleb128 0x2f
+ 1263 0045 0B       		.uleb128 0xb
+ 1264 0046 00       		.byte	0
+ 1265 0047 00       		.byte	0
+ 1266 0048 07       		.uleb128 0x7
+ 1267 0049 13       		.uleb128 0x13
+ 1268 004a 01       		.byte	0x1
+ 1269 004b 03       		.uleb128 0x3
+ 1270 004c 0E       		.uleb128 0xe
+ 1271 004d 0B       		.uleb128 0xb
+ 1272 004e 0B       		.uleb128 0xb
+ 1273 004f 3A       		.uleb128 0x3a
+ 1274 0050 0B       		.uleb128 0xb
+ 1275 0051 3B       		.uleb128 0x3b
+ 1276 0052 0B       		.uleb128 0xb
+ 1277 0053 01       		.uleb128 0x1
+ 1278 0054 13       		.uleb128 0x13
+ 1279 0055 00       		.byte	0
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 31
+
+
+ 1280 0056 00       		.byte	0
+ 1281 0057 08       		.uleb128 0x8
+ 1282 0058 0D       		.uleb128 0xd
+ 1283 0059 00       		.byte	0
+ 1284 005a 03       		.uleb128 0x3
+ 1285 005b 0E       		.uleb128 0xe
+ 1286 005c 3A       		.uleb128 0x3a
+ 1287 005d 0B       		.uleb128 0xb
+ 1288 005e 3B       		.uleb128 0x3b
+ 1289 005f 0B       		.uleb128 0xb
+ 1290 0060 49       		.uleb128 0x49
+ 1291 0061 13       		.uleb128 0x13
+ 1292 0062 0B       		.uleb128 0xb
+ 1293 0063 0B       		.uleb128 0xb
+ 1294 0064 0D       		.uleb128 0xd
+ 1295 0065 0B       		.uleb128 0xb
+ 1296 0066 0C       		.uleb128 0xc
+ 1297 0067 0B       		.uleb128 0xb
+ 1298 0068 38       		.uleb128 0x38
+ 1299 0069 0B       		.uleb128 0xb
+ 1300 006a 00       		.byte	0
+ 1301 006b 00       		.byte	0
+ 1302 006c 09       		.uleb128 0x9
+ 1303 006d 0D       		.uleb128 0xd
+ 1304 006e 00       		.byte	0
+ 1305 006f 03       		.uleb128 0x3
+ 1306 0070 08       		.uleb128 0x8
+ 1307 0071 3A       		.uleb128 0x3a
+ 1308 0072 0B       		.uleb128 0xb
+ 1309 0073 3B       		.uleb128 0x3b
+ 1310 0074 0B       		.uleb128 0xb
+ 1311 0075 49       		.uleb128 0x49
+ 1312 0076 13       		.uleb128 0x13
+ 1313 0077 0B       		.uleb128 0xb
+ 1314 0078 0B       		.uleb128 0xb
+ 1315 0079 0D       		.uleb128 0xd
+ 1316 007a 0B       		.uleb128 0xb
+ 1317 007b 0C       		.uleb128 0xc
+ 1318 007c 0B       		.uleb128 0xb
+ 1319 007d 38       		.uleb128 0x38
+ 1320 007e 0B       		.uleb128 0xb
+ 1321 007f 00       		.byte	0
+ 1322 0080 00       		.byte	0
+ 1323 0081 0A       		.uleb128 0xa
+ 1324 0082 2E       		.uleb128 0x2e
+ 1325 0083 01       		.byte	0x1
+ 1326 0084 3F       		.uleb128 0x3f
+ 1327 0085 19       		.uleb128 0x19
+ 1328 0086 03       		.uleb128 0x3
+ 1329 0087 0E       		.uleb128 0xe
+ 1330 0088 3A       		.uleb128 0x3a
+ 1331 0089 0B       		.uleb128 0xb
+ 1332 008a 3B       		.uleb128 0x3b
+ 1333 008b 0B       		.uleb128 0xb
+ 1334 008c 27       		.uleb128 0x27
+ 1335 008d 19       		.uleb128 0x19
+ 1336 008e 11       		.uleb128 0x11
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 32
+
+
+ 1337 008f 01       		.uleb128 0x1
+ 1338 0090 12       		.uleb128 0x12
+ 1339 0091 06       		.uleb128 0x6
+ 1340 0092 40       		.uleb128 0x40
+ 1341 0093 18       		.uleb128 0x18
+ 1342 0094 9642     		.uleb128 0x2116
+ 1343 0096 19       		.uleb128 0x19
+ 1344 0097 01       		.uleb128 0x1
+ 1345 0098 13       		.uleb128 0x13
+ 1346 0099 00       		.byte	0
+ 1347 009a 00       		.byte	0
+ 1348 009b 0B       		.uleb128 0xb
+ 1349 009c 05       		.uleb128 0x5
+ 1350 009d 00       		.byte	0
+ 1351 009e 03       		.uleb128 0x3
+ 1352 009f 0E       		.uleb128 0xe
+ 1353 00a0 3A       		.uleb128 0x3a
+ 1354 00a1 0B       		.uleb128 0xb
+ 1355 00a2 3B       		.uleb128 0x3b
+ 1356 00a3 0B       		.uleb128 0xb
+ 1357 00a4 49       		.uleb128 0x49
+ 1358 00a5 13       		.uleb128 0x13
+ 1359 00a6 02       		.uleb128 0x2
+ 1360 00a7 18       		.uleb128 0x18
+ 1361 00a8 00       		.byte	0
+ 1362 00a9 00       		.byte	0
+ 1363 00aa 0C       		.uleb128 0xc
+ 1364 00ab 34       		.uleb128 0x34
+ 1365 00ac 00       		.byte	0
+ 1366 00ad 03       		.uleb128 0x3
+ 1367 00ae 08       		.uleb128 0x8
+ 1368 00af 3A       		.uleb128 0x3a
+ 1369 00b0 0B       		.uleb128 0xb
+ 1370 00b1 3B       		.uleb128 0x3b
+ 1371 00b2 0B       		.uleb128 0xb
+ 1372 00b3 49       		.uleb128 0x49
+ 1373 00b4 13       		.uleb128 0x13
+ 1374 00b5 02       		.uleb128 0x2
+ 1375 00b6 18       		.uleb128 0x18
+ 1376 00b7 00       		.byte	0
+ 1377 00b8 00       		.byte	0
+ 1378 00b9 0D       		.uleb128 0xd
+ 1379 00ba 34       		.uleb128 0x34
+ 1380 00bb 00       		.byte	0
+ 1381 00bc 03       		.uleb128 0x3
+ 1382 00bd 0E       		.uleb128 0xe
+ 1383 00be 3A       		.uleb128 0x3a
+ 1384 00bf 0B       		.uleb128 0xb
+ 1385 00c0 3B       		.uleb128 0x3b
+ 1386 00c1 0B       		.uleb128 0xb
+ 1387 00c2 49       		.uleb128 0x49
+ 1388 00c3 13       		.uleb128 0x13
+ 1389 00c4 02       		.uleb128 0x2
+ 1390 00c5 18       		.uleb128 0x18
+ 1391 00c6 00       		.byte	0
+ 1392 00c7 00       		.byte	0
+ 1393 00c8 0E       		.uleb128 0xe
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 33
+
+
+ 1394 00c9 0F       		.uleb128 0xf
+ 1395 00ca 00       		.byte	0
+ 1396 00cb 0B       		.uleb128 0xb
+ 1397 00cc 0B       		.uleb128 0xb
+ 1398 00cd 49       		.uleb128 0x49
+ 1399 00ce 13       		.uleb128 0x13
+ 1400 00cf 00       		.byte	0
+ 1401 00d0 00       		.byte	0
+ 1402 00d1 0F       		.uleb128 0xf
+ 1403 00d2 2E       		.uleb128 0x2e
+ 1404 00d3 00       		.byte	0
+ 1405 00d4 3F       		.uleb128 0x3f
+ 1406 00d5 19       		.uleb128 0x19
+ 1407 00d6 03       		.uleb128 0x3
+ 1408 00d7 0E       		.uleb128 0xe
+ 1409 00d8 3A       		.uleb128 0x3a
+ 1410 00d9 0B       		.uleb128 0xb
+ 1411 00da 3B       		.uleb128 0x3b
+ 1412 00db 0B       		.uleb128 0xb
+ 1413 00dc 27       		.uleb128 0x27
+ 1414 00dd 19       		.uleb128 0x19
+ 1415 00de 11       		.uleb128 0x11
+ 1416 00df 01       		.uleb128 0x1
+ 1417 00e0 12       		.uleb128 0x12
+ 1418 00e1 06       		.uleb128 0x6
+ 1419 00e2 40       		.uleb128 0x40
+ 1420 00e3 18       		.uleb128 0x18
+ 1421 00e4 9642     		.uleb128 0x2116
+ 1422 00e6 19       		.uleb128 0x19
+ 1423 00e7 00       		.byte	0
+ 1424 00e8 00       		.byte	0
+ 1425 00e9 10       		.uleb128 0x10
+ 1426 00ea 2E       		.uleb128 0x2e
+ 1427 00eb 01       		.byte	0x1
+ 1428 00ec 3F       		.uleb128 0x3f
+ 1429 00ed 19       		.uleb128 0x19
+ 1430 00ee 03       		.uleb128 0x3
+ 1431 00ef 0E       		.uleb128 0xe
+ 1432 00f0 3A       		.uleb128 0x3a
+ 1433 00f1 0B       		.uleb128 0xb
+ 1434 00f2 3B       		.uleb128 0x3b
+ 1435 00f3 05       		.uleb128 0x5
+ 1436 00f4 27       		.uleb128 0x27
+ 1437 00f5 19       		.uleb128 0x19
+ 1438 00f6 11       		.uleb128 0x11
+ 1439 00f7 01       		.uleb128 0x1
+ 1440 00f8 12       		.uleb128 0x12
+ 1441 00f9 06       		.uleb128 0x6
+ 1442 00fa 40       		.uleb128 0x40
+ 1443 00fb 18       		.uleb128 0x18
+ 1444 00fc 9642     		.uleb128 0x2116
+ 1445 00fe 19       		.uleb128 0x19
+ 1446 00ff 01       		.uleb128 0x1
+ 1447 0100 13       		.uleb128 0x13
+ 1448 0101 00       		.byte	0
+ 1449 0102 00       		.byte	0
+ 1450 0103 11       		.uleb128 0x11
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 34
+
+
+ 1451 0104 05       		.uleb128 0x5
+ 1452 0105 00       		.byte	0
+ 1453 0106 03       		.uleb128 0x3
+ 1454 0107 0E       		.uleb128 0xe
+ 1455 0108 3A       		.uleb128 0x3a
+ 1456 0109 0B       		.uleb128 0xb
+ 1457 010a 3B       		.uleb128 0x3b
+ 1458 010b 05       		.uleb128 0x5
+ 1459 010c 49       		.uleb128 0x49
+ 1460 010d 13       		.uleb128 0x13
+ 1461 010e 02       		.uleb128 0x2
+ 1462 010f 18       		.uleb128 0x18
+ 1463 0110 00       		.byte	0
+ 1464 0111 00       		.byte	0
+ 1465 0112 12       		.uleb128 0x12
+ 1466 0113 34       		.uleb128 0x34
+ 1467 0114 00       		.byte	0
+ 1468 0115 03       		.uleb128 0x3
+ 1469 0116 0E       		.uleb128 0xe
+ 1470 0117 3A       		.uleb128 0x3a
+ 1471 0118 0B       		.uleb128 0xb
+ 1472 0119 3B       		.uleb128 0x3b
+ 1473 011a 05       		.uleb128 0x5
+ 1474 011b 49       		.uleb128 0x49
+ 1475 011c 13       		.uleb128 0x13
+ 1476 011d 02       		.uleb128 0x2
+ 1477 011e 18       		.uleb128 0x18
+ 1478 011f 00       		.byte	0
+ 1479 0120 00       		.byte	0
+ 1480 0121 13       		.uleb128 0x13
+ 1481 0122 34       		.uleb128 0x34
+ 1482 0123 00       		.byte	0
+ 1483 0124 03       		.uleb128 0x3
+ 1484 0125 08       		.uleb128 0x8
+ 1485 0126 3A       		.uleb128 0x3a
+ 1486 0127 0B       		.uleb128 0xb
+ 1487 0128 3B       		.uleb128 0x3b
+ 1488 0129 05       		.uleb128 0x5
+ 1489 012a 49       		.uleb128 0x49
+ 1490 012b 13       		.uleb128 0x13
+ 1491 012c 02       		.uleb128 0x2
+ 1492 012d 18       		.uleb128 0x18
+ 1493 012e 00       		.byte	0
+ 1494 012f 00       		.byte	0
+ 1495 0130 14       		.uleb128 0x14
+ 1496 0131 05       		.uleb128 0x5
+ 1497 0132 00       		.byte	0
+ 1498 0133 03       		.uleb128 0x3
+ 1499 0134 08       		.uleb128 0x8
+ 1500 0135 3A       		.uleb128 0x3a
+ 1501 0136 0B       		.uleb128 0xb
+ 1502 0137 3B       		.uleb128 0x3b
+ 1503 0138 05       		.uleb128 0x5
+ 1504 0139 49       		.uleb128 0x49
+ 1505 013a 13       		.uleb128 0x13
+ 1506 013b 02       		.uleb128 0x2
+ 1507 013c 18       		.uleb128 0x18
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 35
+
+
+ 1508 013d 00       		.byte	0
+ 1509 013e 00       		.byte	0
+ 1510 013f 15       		.uleb128 0x15
+ 1511 0140 34       		.uleb128 0x34
+ 1512 0141 00       		.byte	0
+ 1513 0142 03       		.uleb128 0x3
+ 1514 0143 0E       		.uleb128 0xe
+ 1515 0144 3A       		.uleb128 0x3a
+ 1516 0145 0B       		.uleb128 0xb
+ 1517 0146 3B       		.uleb128 0x3b
+ 1518 0147 05       		.uleb128 0x5
+ 1519 0148 49       		.uleb128 0x49
+ 1520 0149 13       		.uleb128 0x13
+ 1521 014a 3F       		.uleb128 0x3f
+ 1522 014b 19       		.uleb128 0x19
+ 1523 014c 3C       		.uleb128 0x3c
+ 1524 014d 19       		.uleb128 0x19
+ 1525 014e 00       		.byte	0
+ 1526 014f 00       		.byte	0
+ 1527 0150 16       		.uleb128 0x16
+ 1528 0151 35       		.uleb128 0x35
+ 1529 0152 00       		.byte	0
+ 1530 0153 49       		.uleb128 0x49
+ 1531 0154 13       		.uleb128 0x13
+ 1532 0155 00       		.byte	0
+ 1533 0156 00       		.byte	0
+ 1534 0157 17       		.uleb128 0x17
+ 1535 0158 34       		.uleb128 0x34
+ 1536 0159 00       		.byte	0
+ 1537 015a 03       		.uleb128 0x3
+ 1538 015b 0E       		.uleb128 0xe
+ 1539 015c 3A       		.uleb128 0x3a
+ 1540 015d 0B       		.uleb128 0xb
+ 1541 015e 3B       		.uleb128 0x3b
+ 1542 015f 0B       		.uleb128 0xb
+ 1543 0160 49       		.uleb128 0x49
+ 1544 0161 13       		.uleb128 0x13
+ 1545 0162 3F       		.uleb128 0x3f
+ 1546 0163 19       		.uleb128 0x19
+ 1547 0164 02       		.uleb128 0x2
+ 1548 0165 18       		.uleb128 0x18
+ 1549 0166 00       		.byte	0
+ 1550 0167 00       		.byte	0
+ 1551 0168 00       		.byte	0
+ 1552              		.section	.debug_aranges,"",%progbits
+ 1553 0000 34000000 		.4byte	0x34
+ 1554 0004 0200     		.2byte	0x2
+ 1555 0006 00000000 		.4byte	.Ldebug_info0
+ 1556 000a 04       		.byte	0x4
+ 1557 000b 00       		.byte	0
+ 1558 000c 0000     		.2byte	0
+ 1559 000e 0000     		.2byte	0
+ 1560 0010 00000000 		.4byte	.LFB56
+ 1561 0014 50030000 		.4byte	.LFE56-.LFB56
+ 1562 0018 00000000 		.4byte	.LFB57
+ 1563 001c 1E000000 		.4byte	.LFE57-.LFB57
+ 1564 0020 00000000 		.4byte	.LFB58
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 36
+
+
+ 1565 0024 70000000 		.4byte	.LFE58-.LFB58
+ 1566 0028 00000000 		.4byte	.LFB59
+ 1567 002c 54000000 		.4byte	.LFE59-.LFB59
+ 1568 0030 00000000 		.4byte	0
+ 1569 0034 00000000 		.4byte	0
+ 1570              		.section	.debug_ranges,"",%progbits
+ 1571              	.Ldebug_ranges0:
+ 1572 0000 00000000 		.4byte	.LFB56
+ 1573 0004 50030000 		.4byte	.LFE56
+ 1574 0008 00000000 		.4byte	.LFB57
+ 1575 000c 1E000000 		.4byte	.LFE57
+ 1576 0010 00000000 		.4byte	.LFB58
+ 1577 0014 70000000 		.4byte	.LFE58
+ 1578 0018 00000000 		.4byte	.LFB59
+ 1579 001c 54000000 		.4byte	.LFE59
+ 1580 0020 00000000 		.4byte	0
+ 1581 0024 00000000 		.4byte	0
+ 1582              		.section	.debug_line,"",%progbits
+ 1583              	.Ldebug_line0:
+ 1584 0000 6B020000 		.section	.debug_str,"MS",%progbits,1
+ 1584      02005701 
+ 1584      00000201 
+ 1584      FB0E0D00 
+ 1584      01010101 
+ 1585              	.LASF9:
+ 1586 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 1586      7433325F 
+ 1586      7400
+ 1587              	.LASF22:
+ 1588 000a 77617665 		.ascii	"waveType\000"
+ 1588      54797065 
+ 1588      00
+ 1589              	.LASF18:
+ 1590 0013 61646472 		.ascii	"addr\000"
+ 1590      00
+ 1591              	.LASF38:
+ 1592 0018 6F75745F 		.ascii	"out_lo\000"
+ 1592      6C6F00
+ 1593              	.LASF42:
+ 1594 001f 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1594      4320342E 
+ 1594      392E3320 
+ 1594      32303135 
+ 1594      30333033 
+ 1595 0052 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1595      20726576 
+ 1595      6973696F 
+ 1595      6E203232 
+ 1595      31323230 
+ 1596 0085 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1596      66756E63 
+ 1596      74696F6E 
+ 1596      2D736563 
+ 1596      74696F6E 
+ 1597              	.LASF45:
+ 1598 00ad 76657373 		.ascii	"vessel_tag\000"
+ 1598      656C5F74 
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 37
+
+
+ 1598      616700
+ 1599              	.LASF39:
+ 1600 00b8 6461745F 		.ascii	"dat_out\000"
+ 1600      6F757400 
+ 1601              	.LASF33:
+ 1602 00c0 64617461 		.ascii	"data_len\000"
+ 1602      5F6C656E 
+ 1602      00
+ 1603              	.LASF23:
+ 1604 00c9 636F6C75 		.ascii	"column\000"
+ 1604      6D6E00
+ 1605              	.LASF34:
+ 1606 00d0 50797468 		.ascii	"Python_sendData\000"
+ 1606      6F6E5F73 
+ 1606      656E6444 
+ 1606      61746100 
+ 1607              	.LASF14:
+ 1608 00e0 666C6F61 		.ascii	"float\000"
+ 1608      7400
+ 1609              	.LASF1:
+ 1610 00e6 756E7369 		.ascii	"unsigned char\000"
+ 1610      676E6564 
+ 1610      20636861 
+ 1610      7200
+ 1611              	.LASF20:
+ 1612 00f4 74726967 		.ascii	"trigport\000"
+ 1612      706F7274 
+ 1612      00
+ 1613              	.LASF5:
+ 1614 00fd 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1614      20756E73 
+ 1614      69676E65 
+ 1614      6420696E 
+ 1614      7400
+ 1615              	.LASF28:
+ 1616 010f 50797468 		.ascii	"Python_parser\000"
+ 1616      6F6E5F70 
+ 1616      61727365 
+ 1616      7200
+ 1617              	.LASF26:
+ 1618 011d 76657373 		.ascii	"vessel_type\000"
+ 1618      656C5F74 
+ 1618      79706500 
+ 1619              	.LASF36:
+ 1620 0129 6F75745F 		.ascii	"out_mid_hi\000"
+ 1620      6D69645F 
+ 1620      686900
+ 1621              	.LASF40:
+ 1622 0134 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1622      52784275 
+ 1622      66666572 
+ 1622      00
+ 1623              	.LASF24:
+ 1624 0141 64656C61 		.ascii	"delayus\000"
+ 1624      79757300 
+ 1625              	.LASF15:
+ 1626 0149 646F7562 		.ascii	"double\000"
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 38
+
+
+ 1626      6C6500
+ 1627              	.LASF30:
+ 1628 0150 76657373 		.ascii	"vessel\000"
+ 1628      656C00
+ 1629              	.LASF25:
+ 1630 0157 636F6C6F 		.ascii	"color\000"
+ 1630      7200
+ 1631              	.LASF12:
+ 1632 015d 75696E74 		.ascii	"uint16\000"
+ 1632      313600
+ 1633              	.LASF13:
+ 1634 0164 75696E74 		.ascii	"uint32\000"
+ 1634      333200
+ 1635              	.LASF8:
+ 1636 016b 756E7369 		.ascii	"unsigned int\000"
+ 1636      676E6564 
+ 1636      20696E74 
+ 1636      00
+ 1637              	.LASF7:
+ 1638 0178 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1638      206C6F6E 
+ 1638      6720756E 
+ 1638      7369676E 
+ 1638      65642069 
+ 1639              	.LASF27:
+ 1640 018f 74656D70 		.ascii	"temp_data\000"
+ 1640      5F646174 
+ 1640      6100
+ 1641              	.LASF46:
+ 1642 0199 50797468 		.ascii	"Python_Initialize\000"
+ 1642      6F6E5F49 
+ 1642      6E697469 
+ 1642      616C697A 
+ 1642      6500
+ 1643              	.LASF10:
+ 1644 01ab 696E7433 		.ascii	"int32_t\000"
+ 1644      325F7400 
+ 1645              	.LASF17:
+ 1646 01b3 73697A65 		.ascii	"sizetype\000"
+ 1646      74797065 
+ 1646      00
+ 1647              	.LASF32:
+ 1648 01bc 6461745F 		.ascii	"dat_hi\000"
+ 1648      686900
+ 1649              	.LASF6:
+ 1650 01c3 6C6F6E67 		.ascii	"long long int\000"
+ 1650      206C6F6E 
+ 1650      6720696E 
+ 1650      7400
+ 1651              	.LASF16:
+ 1652 01d1 63686172 		.ascii	"char\000"
+ 1652      00
+ 1653              	.LASF19:
+ 1654 01d6 706F7274 		.ascii	"port\000"
+ 1654      00
+ 1655              	.LASF2:
+ 1656 01db 73686F72 		.ascii	"short int\000"
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 39
+
+
+ 1656      7420696E 
+ 1656      7400
+ 1657              	.LASF41:
+ 1658 01e5 62756666 		.ascii	"buffer\000"
+ 1658      657200
+ 1659              	.LASF11:
+ 1660 01ec 75696E74 		.ascii	"uint8\000"
+ 1660      3800
+ 1661              	.LASF29:
+ 1662 01f2 50797468 		.ascii	"Python_getData\000"
+ 1662      6F6E5F67 
+ 1662      65744461 
+ 1662      746100
+ 1663              	.LASF37:
+ 1664 0201 6F75745F 		.ascii	"out_mid_lo\000"
+ 1664      6D69645F 
+ 1664      6C6F00
+ 1665              	.LASF31:
+ 1666 020c 6461745F 		.ascii	"dat_lo\000"
+ 1666      6C6F00
+ 1667              	.LASF4:
+ 1668 0213 6C6F6E67 		.ascii	"long int\000"
+ 1668      20696E74 
+ 1668      00
+ 1669              	.LASF0:
+ 1670 021c 7369676E 		.ascii	"signed char\000"
+ 1670      65642063 
+ 1670      68617200 
+ 1671              	.LASF3:
+ 1672 0228 73686F72 		.ascii	"short unsigned int\000"
+ 1672      7420756E 
+ 1672      7369676E 
+ 1672      65642069 
+ 1672      6E7400
+ 1673              	.LASF44:
+ 1674 023b 433A5C55 		.ascii	"C:\\Users\\Robert\\workspace\\embedit\\linx\\PSoC_2"
+ 1674      73657273 
+ 1674      5C526F62 
+ 1674      6572745C 
+ 1674      776F726B 
+ 1675 0268 5F50692D 		.ascii	"_Pi-000.Bundle01\\PSoC_2_Pi-000.Bundle01\\PSoC_2_Pi"
+ 1675      3030302E 
+ 1675      42756E64 
+ 1675      6C653031 
+ 1675      5C50536F 
+ 1676 0299 2E637964 		.ascii	".cydsn\000"
+ 1676      736E00
+ 1677              	.LASF21:
+ 1678 02a0 74726967 		.ascii	"trigpin\000"
+ 1678      70696E00 
+ 1679              	.LASF43:
+ 1680 02a8 2E5C5079 		.ascii	".\\Python.c\000"
+ 1680      74686F6E 
+ 1680      2E6300
+ 1681              	.LASF35:
+ 1682 02b3 6F75745F 		.ascii	"out_hi\000"
+ 1682      686900
+ARM GAS  C:\Users\Robert\AppData\Local\Temp\ccM2opEE.s 			page 40
+
+
+ 1683              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

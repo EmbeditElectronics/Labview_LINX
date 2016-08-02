@@ -1,0 +1,1664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="PWM_out_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_CLK_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_CLK_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_3_COMPARE_Reg" address="0x4000652A" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_3_Control_Reg" address="0x40006579" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_3_STATUS_MASK" address="0x40006589" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_3_STATUS_AUX_CTRLDP0" address="0x4000659A" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_3_STATUS_AUX_CTRLDP1" address="0x4000659B" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_out_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_out_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_6_COMPARE_Reg" address="0x4000642A" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_6_Control_Reg" address="0x4000647C" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_6_STATUS_MASK" address="0x4000648C" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_6_STATUS_AUX_CTRLDP0" address="0x4000649A" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_6_STATUS_AUX_CTRLDP1" address="0x4000649B" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_5_COMPARE_Reg" address="0x4000642E" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_5_Control_Reg" address="0x4000647B" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_5_STATUS_MASK" address="0x4000648F" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_5_STATUS_AUX_CTRLDP0" address="0x4000649E" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_5_STATUS_AUX_CTRLDP1" address="0x4000649F" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_out_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="EEPROM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_out_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="USBUART" BASE="0x0" SIZE="0x0" desc="USBFS" visible="true" hidden="false">
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ep_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="sof_int" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="dp_int" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Dm" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ep_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="USB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Dp" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ep_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ep_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="bus_reset" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="arb_int" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Clock_vbus" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="USBUART_PM_USB_CR0" address="0x40004394" bitWidth="8" desc="USB Power Mode Control Register 0" hidden="false">
+      <field name="fsusbio_ref_en" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="fsusbio_pd_n" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="fsusbio_pd_pullup_n" from="2" to="2" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_PM_ACT_CFG" address="0x400043A5" bitWidth="8" desc="Active Power Mode Configuration Register" hidden="false" />
+    <register name="USBUART_PM_STBY_CFG" address="0x400043B5" bitWidth="8" desc="Standby Power Mode Configuration Register" hidden="false" />
+    <register name="USBUART_PRT.PS" address="0x400051F1" bitWidth="8" desc="Port Pin State Register" hidden="false">
+      <field name="PinState_DP" from="6" to="6" access="R" resetVal="" desc="" />
+      <field name="PinState_DM" from="7" to="7" access="R" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_PRT_DM0" address="0x400051F2" bitWidth="8" desc="Port Drive Mode Register" hidden="false">
+      <field name="DriveMode_DP" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="DriveMode_DM" from="7" to="7" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_PRT_DM1" address="0x400051F3" bitWidth="8" desc="Port Drive Mode Register" hidden="false">
+      <field name="PullUp_en_DP" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="PullUp_en_DM" from="7" to="7" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_PRT.INP_DIS" address="0x400051F8" bitWidth="8" desc="Input buffer disable override" hidden="false">
+      <field name="seinput_dis_dp" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="seinput_dis_dm" from="7" to="7" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_EP0_DR0" address="0x40006000" bitWidth="8" desc="bmRequestType" hidden="false" />
+    <register name="USBUART_EP0_DR1" address="0x40006001" bitWidth="8" desc="bRequest" hidden="false" />
+    <register name="USBUART_EP0_DR2" address="0x40006002" bitWidth="8" desc="wValueLo" hidden="false" />
+    <register name="USBUART_EP0_DR3" address="0x40006003" bitWidth="8" desc="wValueHi" hidden="false" />
+    <register name="USBUART_EP0_DR4" address="0x40006004" bitWidth="8" desc="wIndexLo" hidden="false" />
+    <register name="USBUART_EP0_DR5" address="0x40006005" bitWidth="8" desc="wIndexHi" hidden="false" />
+    <register name="USBUART_EP0_DR6" address="0x40006006" bitWidth="8" desc="lengthLo" hidden="false" />
+    <register name="USBUART_EP0_DR7" address="0x40006007" bitWidth="8" desc="lengthHi" hidden="false" />
+    <register name="USBUART_CR0" address="0x40006008" bitWidth="8" desc="USB Control Register 0" hidden="false">
+      <field name="device_address" from="6" to="0" access="R" resetVal="" desc="" />
+      <field name="usb_enable" from="7" to="7" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_CR1" address="0x40006009" bitWidth="8" desc="USB Control Register 1" hidden="false">
+      <field name="reg_enable" from="0" to="0" access="RW" resetVal="" desc="" />
+      <field name="enable_lock" from="1" to="1" access="RW" resetVal="" desc="" />
+      <field name="bus_activity" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="trim_offset_msb" from="3" to="3" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_SIE_EP1_CR0" address="0x4000600E" bitWidth="8" desc="The Endpoint1 Control Register" hidden="false" />
+    <register name="USBUART_USBIO_CR0" address="0x40006010" bitWidth="8" desc="USBIO Control Register 0" hidden="false">
+      <field name="rd" from="0" to="0" access="R" resetVal="" desc="" />
+      <field name="td" from="5" to="5" access="RW" resetVal="" desc="" />
+      <field name="tse0" from="6" to="6" access="RW" resetVal="" desc="" />
+      <field name="ten" from="7" to="7" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_USBIO_CR1" address="0x40006012" bitWidth="8" desc="USBIO Control Register 1" hidden="false">
+      <field name="dmo" from="0" to="0" access="R" resetVal="" desc="" />
+      <field name="dpo" from="1" to="1" access="R" resetVal="" desc="" />
+      <field name="usbpuen" from="2" to="2" access="RW" resetVal="" desc="" />
+      <field name="iomode" from="5" to="5" access="RW" resetVal="" desc="" />
+    </register>
+    <register name="USBUART_SIE_EP2_CR0" address="0x4000601E" bitWidth="8" desc="The Endpoint2 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP3_CR0" address="0x4000602E" bitWidth="8" desc="The Endpoint3 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP4_CR0" address="0x4000603E" bitWidth="8" desc="The Endpoint4 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP5_CR0" address="0x4000604E" bitWidth="8" desc="The Endpoint5 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP6_CR0" address="0x4000605E" bitWidth="8" desc="The Endpoint6 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP7_CR0" address="0x4000606E" bitWidth="8" desc="The Endpoint7 Control Register" hidden="false" />
+    <register name="USBUART_SIE_EP8_CR0" address="0x4000607E" bitWidth="8" desc="The Endpoint8 Control Register" hidden="false" />
+    <register name="USBUART_BUF_SIZE" address="0x4000608C" bitWidth="8" desc="Dedicated Endpoint Buffer Size Register" hidden="false" />
+    <register name="USBUART_EP_ACTIVE" address="0x4000608E" bitWidth="8" desc="Endpoint Active Indication Register" hidden="false" />
+    <register name="USBUART_EP_TYPE" address="0x4000608F" bitWidth="8" desc="Endpoint Type (IN/OUT) Indication" hidden="false" />
+    <register name="USBUART_USB_CLK_EN" address="0x4000609D" bitWidth="8" desc="USB Block Clock Enable Register" hidden="false" />
+  </block>
+  <block name="WaveDAC_clk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="WaveDAC8_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="WaveDAC8_1_BuffAmp" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+      <block name="ABuf" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="abuf_negInput_mux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <register name="PM_ACT_CFG4" address="0x400043A4" bitWidth="8" desc="Active Power Mode Configuration Register 4" hidden="false">
+        <field name="EN_OPAMP" from="3" to="0" access="RW" resetVal="" desc="Enables subsystems during active power mode">
+          <value name="Blk 0" value="0000" desc="Enables analog linear output buffer for Opamp block 0" />
+          <value name="Blk 1" value="0010" desc="Enables analog linear output buffer for Opamp block 1" />
+          <value name="Blk 2" value="0100" desc="Enables analog linear output buffer for Opamp block 2" />
+          <value name="Blk 3" value="1000" desc="Enables analog linear output buffer for Opamp block 3" />
+        </field>
+      </register>
+      <register name="PM_STBY_CFG4" address="0x400043B4" bitWidth="8" desc="Standby Power Mode Configuration Register 4" hidden="false">
+        <field name="EN_OPAMP" from="3" to="0" access="RW" resetVal="" desc="Enables subsystems during standby power mode">
+          <value name="Blk 0" value="0000" desc="Enables analog linear output buffer for Opamp block 0" />
+          <value name="Blk 1" value="0010" desc="Enables analog linear output buffer for Opamp block 1" />
+          <value name="Blk 2" value="0100" desc="Enables analog linear output buffer for Opamp block 2" />
+          <value name="Blk 3" value="1000" desc="Enables analog linear output buffer for Opamp block 3" />
+        </field>
+      </register>
+      <register name="OPAMP__TR0" address="0x40004624" bitWidth="8" desc="Analog Output Buffer Trim Register 0" hidden="false">
+        <field name="offset_trim" from="4" to="0" access="RW" resetVal="" desc="Offset Trim: 420uV typical step size; +/- 6.8mV offset trimmable range" />
+      </register>
+      <register name="OPAMP__TR1" address="0x40004625" bitWidth="8" desc="Analog Output Buffer Trim Register 1" hidden="false">
+        <field name="RSVD" from="7" to="0" access="RW" resetVal="" desc="RSVD" />
+      </register>
+      <register name="OPAMP__CR" address="0x4000585C" bitWidth="8" desc="Analog Output Buffer Configuration Register" hidden="false">
+        <field name="pwr_mode" from="1" to="0" access="RW" resetVal="" desc="Power Mode">
+          <value name="Default Fast" value="00" desc="Default Power mode Fast" />
+          <value name="Slow" value="01" desc="Power Mode Slow" />
+          <value name="Medium" value="10" desc="Power Mode Medium" />
+          <value name="Fast" value="11" desc="Power Mode Fast" />
+        </field>
+      </register>
+      <register name="OPAMP__MX" address="0x40005B44" bitWidth="8" desc="Analog Buffer Input Selection Register" hidden="false">
+        <field name="MX_VP_ENUM" from="3" to="0" access="RW" resetVal="" desc="MUX select VP (Positive terminal input)">
+          <value name="OPAMP0_MX_VP_DEFAULT" value="0000" desc="Default - Not Connected (NC)" />
+          <value name="OPAMP0_MX_VP_AG4" value="0001" desc="MUX Selection AGL(4)" />
+          <value name="OPAMP0_MX_VP_AG5" value="0010" desc="MUX Selection AGL(5)" />
+          <value name="OPAMP0_MX_VP_AG6" value="0011" desc="MUX Selection AGL(6)" />
+          <value name="OPAMP0_MX_VP_AG7" value="0100" desc="MUX Selection AGL(7)" />
+          <value name="OPAMP0_MX_VP_ABUS0" value="0101" desc="MUX Selection ABUSL(0)" />
+          <value name="OPAMP0_MX_VP_ABUS1" value="0110" desc="MUX Selection ABUSL(1)" />
+          <value name="OPAMP0_MX_VP_ABUS2" value="0111" desc="MUX Selection ABUSL(2)" />
+          <value name="OPAMP0_MX_VP_ABUS3" value="1000" desc="MUX Selection ABUSL(3)" />
+          <value name="OPAMP0_MX_VP_VREF" value="1001" desc="MUX Selection: OPAMP Voltage Reference" />
+          <value name="OPAMP0_MX_VP_H_0xA" value="1010" desc="Reserved (NC)" />
+          <value name="OPAMP0_MX_VP_H_0xB" value="1011" desc="Reserved (NC)" />
+          <value name="OPAMP0_MX_VP_H_0xC" value="1100" desc="Reserved (NC)" />
+          <value name="OPAMP0_MX_VP_H_0xD" value="1101" desc="Reserved (NC)" />
+          <value name="OPAMP0_MX_VP_H_0xE" value="1110" desc="Reserved (NC)" />
+          <value name="OPAMP0_MX_VP_H_0xF" value="1111" desc="Reserved (NC)" />
+        </field>
+        <field name="MX_VN_ENUM" from="5" to="4" access="RW" resetVal="" desc="MUX select VN (Negative terminal input)">
+          <value name="OPAMP0_MX_VN_DEFAULT" value="00" desc="Default - Not Connected (NC)" />
+          <value name="OPAMP0_MX_VN_AG4" value="01" desc="MUX Selection AGL(4)" />
+          <value name="OPAMP0_MX_VN_AG6" value="10" desc="MUX Selection AGL(6)" />
+          <value name="OPAMP0_MX_VN_0x3" value="11" desc="Reserved (NC)" />
+        </field>
+      </register>
+      <register name="OPAMP__SW" address="0x40005B45" bitWidth="8" desc="Analog Buffer Routing Switch Register" hidden="false">
+        <field name="swfol" from="0" to="0" access="RW" resetVal="" desc="Switch Enable Follow" />
+        <field name="swinn" from="1" to="1" access="RW" resetVal="" desc="Switch Enable Negative Input" />
+        <field name="swinp" from="2" to="2" access="RW" resetVal="" desc="Switch Enable Positive Input" />
+      </register>
+    </block>
+    <block name="WaveDAC8_1_VDAC8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+      <block name="viDAC8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <register name="VDAC8_PM_ACT_CFG" address="0x400043A8" bitWidth="8" desc="Active Power Mode Configuration Register 8" hidden="false">
+        <field name="en_dac" from="4" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB" />
+      </register>
+      <register name="VDAC8_PM_STBY_CFG" address="0x400043B8" bitWidth="8" desc="Standby Power Mode Configuration Register 8" hidden="false">
+        <field name="en_dac" from="4" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB" />
+      </register>
+      <register name="VDAC8_TR" address="0x40004608" bitWidth="8" desc="VDAC8_TR" hidden="false">
+        <field name="tr" from="7" to="0" access="RW" resetVal="" desc="8 Calibration bits" />
+      </register>
+      <register name="VDAC8_CR0" address="0x40005820" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
+        <field name="mode" from="4" to="4" access="R" resetVal="" desc="Mode Bit">
+          <value name="DAC_MODE_V" value="0" desc="voltage DAC" />
+          <value name="DAC_MODE_I" value="1" desc="current DAC" />
+        </field>
+        <field name="range" from="3" to="2" access="RW" resetVal="" desc="Ranges for mode=0 (VDAC) and mode=1 (IDAC)">
+          <value name="DAC_RANGE_0" value="00" desc="x0=0V to 4*vref (1.024V); 0 to 31.875uA" />
+          <value name="DAC_RANGE_1" value="01" desc="x1=0V to 16*vref (4.096V); 0 to 255uA" />
+          <value name="DAC_RANGE_2" value="10" desc="x0=0V to 4*vref (1.024V); 0 to 2.040mA" />
+          <value name="DAC_RANGE_3" value="11" desc="x1=0V to 16*vref (4.096V); not used" />
+        </field>
+        <field name="hs" from="1" to="1" access="RW" resetVal="" desc="High Speed Bit">
+          <value name="DAC_HS_LOWPOWER" value="0" desc="regular (low power)" />
+          <value name="DAC_HS_HIGHSPEED" value="1" desc="high speed (higher power)" />
+        </field>
+      </register>
+      <register name="VDAC8_CR1" address="0x40005821" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
+        <field name="mx_data" from="5" to="5" access="RW" resetVal="" desc="Select DATA source">
+          <value name="MX_DATA_REG" value="0" desc="Select register source (DACxn_D)" />
+          <value name="MX_DATA_UDB" value="1" desc="Select UDB source" />
+        </field>
+        <field name="mx_idir" from="3" to="3" access="RW" resetVal="" desc="Mux selection for DAC current direction control">
+          <value name="MX_IDIR_REG" value="0" desc="Register source idirbit selected" />
+          <value name="MX_IDIR_UDB" value="1" desc="UDB ictrl selected" />
+        </field>
+        <field name="mx_ioff" from="1" to="1" access="RW" resetVal="" desc="Mux selection for DAC current off control">
+          <value name="MX_IOFF_REG" value="0" desc="Register source ioffbit selected" />
+          <value name="MX_IOFF_UDB" value="1" desc="UDB ictrl selected" />
+        </field>
+        <field name="reset_udb_en" from="4" to="4" access="RW" resetVal="" desc="DAC reset enable">
+          <value name="RESET_UDB_EN_DISABLE" value="0" desc="Disable DAC Reset Source from UDB (System reset always resets)" />
+          <value name="RESET_UDB_EN_ENABLE" value="1" desc="Enable DAC Reset Source from UDB" />
+        </field>
+      </register>
+      <register name="VDAC8_SW0" address="0x40005A80" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
+        <field name="v_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="v_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="VDAC8_SW2" address="0x40005A82" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
+        <field name="v_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+        <field name="v_abus1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+      </register>
+      <register name="VDAC8_SW3" address="0x40005A83" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
+        <field name="iout" from="7" to="7" access="RW" resetVal="" desc="Connect current output to pad">
+          <value name="IOUT_NC" value="0" desc="not connected" />
+          <value name="IOUT_CONNECT" value="1" desc="Connect to pad" />
+        </field>
+        <field name="i_amx" from="4" to="4" access="RW" resetVal="" desc="Connect current output to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+        <field name="v_amx" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+      </register>
+      <register name="VDAC8_SW4" address="0x40005A84" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
+        <field name="i_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="i_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="VDAC8_STROBE" address="0x40005A87" bitWidth="8" desc="DAC Strobe Register" hidden="false">
+        <field name="mx_strobe" from="2" to="0" access="RW" resetVal="" desc="Strobe source selection">
+          <value name="MX_STROBE_BUSWRITE" value="000" desc="Select bus write strobe source (Enable gater regardless of strobe_en setting)" />
+          <value name="MX_STROBE_UDB_SRC" value="001" desc="Select UDB strobe source" />
+          <value name="MX_STROBE_NC_2" value="010" desc="NC" />
+          <value name="MX_STROBE_NC_3" value="011" desc="NC" />
+          <value name="MX_STROBE_CLK_A0_DIG" value="100" desc="Select clk_a0_dig" />
+          <value name="MX_STROBE_CLK_A1_DIG" value="101" desc="Select clk_a1_dig" />
+          <value name="MX_STROBE_CLK_A2_DIG" value="110" desc="Select clk_a2_dig" />
+          <value name="MX_STROBE_CLK_A3_DIG" value="111" desc="Select clk_a3_dig" />
+        </field>
+        <field name="strobe_en" from="3" to="3" access="RW" resetVal="" desc="Strobe gating control (See mx_strobe==3'h0)">
+          <value name="STROBE_EN_0" value="0" desc="disable strobe" />
+          <value name="STROBE_EN_1" value="1" desc="enable strobe" />
+        </field>
+      </register>
+      <register name="VDAC8_DATA" address="0x40005B80" bitWidth="8" desc="DAC Data Register" hidden="false">
+        <field name="data" from="7" to="0" access="RW" resetVal="" desc="8 DAC Data bits" />
+      </register>
+    </block>
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cydff_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_intern_clk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="demux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Wave2_DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Wave1_DMA" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="WaveDAC_out" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_CLK_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Bootloadable_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="cy_boot" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_8_COMPARE_Reg" address="0x4000642C" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_8_Control_Reg" address="0x4000647D" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_8_STATUS_MASK" address="0x4000648D" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_8_STATUS_AUX_CTRLDP0" address="0x4000649C" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_8_STATUS_AUX_CTRLDP1" address="0x4000649D" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_out_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="TIMER_REG" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <register name="TIMER_REG_CONTROL_REG" address="0x40006472" bitWidth="8" desc="" hidden="false" />
+  </block>
+  <block name="GPIO_5_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="Clock_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_4_STATUS_MASK" address="0x4000648A" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_4_COMPARE_Reg" address="0x40006528" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_4_Control_Reg" address="0x4000657A" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_4_STATUS_AUX_CTRLDP0" address="0x40006598" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_4_STATUS_AUX_CTRLDP1" address="0x40006599" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="GPIO_5_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="ADC_SAR_Seq_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="BusClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FinalBuf" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="TempBuf" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_internal" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ADC_SAR_Seq_1_SAR" BASE="0x0" SIZE="0x0" desc="SAR ADC" visible="true" hidden="false">
+      <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_virtualmux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="noconnect" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="vRef_Vdda_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ADC_SAR" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="Clock_VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_virtualmux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_virtualmux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_virtualmux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <register name="SAR_TR0" address="0x40004616" bitWidth="8" desc="SAR trim register" hidden="false" />
+      <register name="SAR_CSR0" address="0x40005908" bitWidth="8" desc="SAR status and control register 0" hidden="false" />
+      <register name="SAR_CSR1" address="0x40005909" bitWidth="8" desc="SAR status and control register 1" hidden="false" />
+      <register name="SAR_CSR2" address="0x4000590A" bitWidth="8" desc="SAR status and control register 2" hidden="false" />
+      <register name="SAR_CSR3" address="0x4000590B" bitWidth="8" desc="SAR status and control register 3" hidden="false" />
+      <register name="SAR_CSR4" address="0x4000590C" bitWidth="8" desc="SAR status and control register 4" hidden="false" />
+      <register name="SAR_CSR5" address="0x4000590D" bitWidth="8" desc="SAR status and control register 5" hidden="false" />
+      <register name="SAR_CSR6" address="0x4000590E" bitWidth="8" desc="SAR status and control register 6" hidden="false" />
+      <register name="SAR_SW0" address="0x40005B28" bitWidth="8" desc="SAR Analog Routing Register 0" hidden="false" />
+      <register name="SAR_SW2" address="0x40005B2A" bitWidth="8" desc="SAR Analog Routing Register 2" hidden="false" />
+      <register name="SAR_SW3" address="0x40005B2B" bitWidth="8" desc="SAR Analog Routing Register 3" hidden="false" />
+      <register name="SAR_SW4" address="0x40005B2C" bitWidth="8" desc="SAR Analog Routing Register 4" hidden="false" />
+      <register name="SAR_SW6" address="0x40005B2E" bitWidth="8" desc="SAR Analog Routing Register 6" hidden="false" />
+      <register name="SAR_CLK" address="0x40005B2F" bitWidth="8" desc="SAR Clock Selection Register" hidden="false" />
+      <register name="SAR_WRK" address="0x40005BA2" bitWidth="16" desc="SAR working register" hidden="false" />
+    </block>
+    <block name="AMuxHw_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="bSAR_SEQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="Timer" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="TimerHW" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="Timer_GLOBAL_ENABLE" address="0x400043A3" bitWidth="8" desc="PM.ACT.CFG" hidden="false">
+      <field name="en_timer" from="3" to="0" access="RW" resetVal="" desc="Enable timer/counters." />
+    </register>
+    <register name="Timer_CONTROL" address="0x40004F00" bitWidth="8" desc="TMRx.CFG0" hidden="false">
+      <field name="EN" from="0" to="0" access="RW" resetVal="" desc="Enables timer/comparator." />
+      <field name="MODE" from="1" to="1" access="RW" resetVal="" desc="Mode. (0 = Timer; 1 = Comparator)">
+        <value name="Timer" value="0" desc="Timer mode. CNT/CMP register holds timer count value." />
+        <value name="Comparator" value="1" desc="Comparator mode. CNT/CMP register holds comparator threshold value." />
+      </field>
+      <field name="ONESHOT" from="2" to="2" access="RW" resetVal="" desc="Timer stops upon reaching stop condition defined by TMR_CFG bits. Can be restarted by asserting TIMER RESET or disabling and re-enabling block." />
+      <field name="CMP_BUFF" from="3" to="3" access="RW" resetVal="" desc="Buffer compare register. Compare register updates only on timer terminal count." />
+      <field name="INV" from="4" to="4" access="RW" resetVal="" desc="Invert sense of TIMEREN signal" />
+      <field name="DB" from="5" to="5" access="RW" resetVal="" desc="Deadband mode--Deadband phases phi1 and phi2 are outputted on CMP and TC output pins respectively.">
+        <value name="Timer" value="0" desc="CMP and TC are output." />
+        <value name="Deadband" value="1" desc="PHI1 (instead of CMP) and PHI2 (instead of TC) are output." />
+      </field>
+      <field name="DEADBAND_PERIOD" from="7" to="6" access="RW" resetVal="" desc="Deadband Period" />
+    </register>
+    <register name="Timer_CONTROL2" address="0x40004F01" bitWidth="8" desc="TMRx.CFG1" hidden="false">
+      <field name="IRQ_SEL" from="0" to="0" access="RW" resetVal="" desc="Irq selection. (0 = raw interrupts; 1 = status register interrupts)" />
+      <field name="FTC" from="1" to="1" access="RW" resetVal="" desc="First Terminal Count (FTC). Setting this bit forces a single pulse on the TC pin when first enabled.">
+        <value name="Disable FTC" value="0" desc="Disable the single cycle pulse, which signifies the timer is starting." />
+        <value name="Enable FTC" value="1" desc="Enable the single cycle pulse, which signifies the timer is starting." />
+      </field>
+      <field name="DCOR" from="2" to="2" access="RW" resetVal="" desc="Disable Clear on Read (DCOR) of Status Register SR0." />
+      <field name="DBMODE" from="3" to="3" access="RW" resetVal="" desc="Deadband mode (asynchronous/synchronous). CMP output pin is also affected when not in deadband mode (CFG0.DEADBAND)." />
+      <field name="CLK_BUS_EN_SEL" from="6" to="4" access="RW" resetVal="" desc="Digital Global Clock selection." />
+      <field name="BUS_CLK_SEL" from="7" to="7" access="RW" resetVal="" desc="Bus Clock selection." />
+    </register>
+    <register name="Timer_CONTROL3_" address="0x40004F02" bitWidth="8" desc="TMRx.CFG2" hidden="false">
+      <field name="TMR_CFG" from="1" to="0" access="RW" resetVal="" desc="Timer configuration (MODE = 0): 000 = Continuous; 001 = Pulsewidth; 010 = Period; 011 = Stop on IRQ">
+        <value name="Continuous" value="0" desc="Timer runs while EN bit of CFG0 register is set to '1'." />
+        <value name="Pulsewidth" value="1" desc="Timer runs from positive to negative edge of TIMEREN." />
+        <value name="Period" value="10" desc="Timer runs from positive to positive edge of TIMEREN." />
+        <value name="Irq" value="11" desc="Timer runs until IRQ." />
+      </field>
+      <field name="COD" from="2" to="2" access="RW" resetVal="" desc="Clear On Disable (COD). Clears or gates outputs to zero." />
+      <field name="ROD" from="3" to="3" access="RW" resetVal="" desc="Reset On Disable (ROD). Resets internal state of output logic" />
+      <field name="CMP_CFG" from="6" to="4" access="RW" resetVal="" desc="Comparator configurations">
+        <value name="Equal" value="0" desc="Compare Equal " />
+        <value name="Less than" value="1" desc="Compare Less Than " />
+        <value name="Less than or equal" value="10" desc="Compare Less Than or Equal ." />
+        <value name="Greater" value="11" desc="Compare Greater Than ." />
+        <value name="Greater than or equal" value="100" desc="Compare Greater Than or Equal " />
+      </field>
+      <field name="HW_EN" from="7" to="7" access="RW" resetVal="" desc="When set Timer Enable controls counting." />
+    </register>
+    <register name="Timer_PERIOD" address="0x40004F04" bitWidth="16" desc="TMRx.PER0 - Assigned Period" hidden="false" />
+    <register name="Timer_COUNTER" address="0x40004F06" bitWidth="16" desc="TMRx.CNT_CMP0 - Current Down Counter Value" hidden="false" />
+  </block>
+  <block name="StripLights" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="Clock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="StripLights_StringSel" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+      <register name="StripLights_StringSel_CONTROL_REG" address="0x4000647E" bitWidth="8" desc="" hidden="false" />
+    </block>
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="B_WS2811" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="demux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="Neo_out" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_5_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_5_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="CapSense_1" BASE="0x0" SIZE="0x0" desc="CapSense" visible="true" hidden="false">
+    <block name="Select_VrefCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Select_VrefOutput" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_1_024ToAMuxCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Connect_VdacToAmuxCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_VchanCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ClockSelect_VirtualMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_1_024ToAMuxCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Connect_VdacToAmuxCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="DisableCapSBuf_VrefCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="DisableCapSBuf_VchanCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_VrefCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="or_bclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="DisableCapSBuf_VchanCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_VrefCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="DisableCapSBuf_VrefCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="NoConnect_VchanCH1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Clock_tmp" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PortCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="CmodCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="AMuxCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VrefRefCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="BufCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IntClock" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="CapSense_1_IdacCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+      <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="viDAC8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <register name="IDAC8_PM_ACT_CFG" address="0x400043A8" bitWidth="8" desc="Active Power Mode Configuration Register 8" hidden="false">
+        <field name="en_dac" from="3" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB." />
+      </register>
+      <register name="IDAC8_PM_STBY_CFG" address="0x400043B8" bitWidth="8" desc="Standby Power Mode Configuration Register 8" hidden="false">
+        <field name="en_dac" from="3" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB." />
+      </register>
+      <register name="IDAC8_TR" address="0x4000460B" bitWidth="8" desc="IDAC8_TR" hidden="false">
+        <field name="tr" from="7" to="0" access="RW" resetVal="" desc="8 Calibration bits" />
+      </register>
+      <register name="IDAC8_CR0" address="0x4000582C" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
+        <field name="mode" from="4" to="4" access="R" resetVal="" desc="Mode Bit">
+          <value name="DAC_MODE_V" value="0" desc="voltage DAC" />
+          <value name="DAC_MODE_I" value="1" desc="current DAC" />
+        </field>
+        <field name="range" from="3" to="2" access="RW" resetVal="" desc="Ranges for mode=0 (VDAC) and mode=1 (IDAC)">
+          <value name="DAC_RANGE_0" value="00" desc="x0=0V to 4*vref (1.024V); 0 to 31.875uA" />
+          <value name="DAC_RANGE_1" value="01" desc="x1=0V to 16*vref (4.096V); 0 to 255uA" />
+          <value name="DAC_RANGE_2" value="10" desc="x0=0V to 4*vref (1.024V); 0 to 2.040mA" />
+          <value name="DAC_RANGE_3" value="11" desc="x1=0V to 16*vref (4.096V); not used" />
+        </field>
+        <field name="hs" from="1" to="1" access="RW" resetVal="" desc="High Speed Bit">
+          <value name="DAC_HS_LOWPOWER" value="0" desc="regular (low power)" />
+          <value name="DAC_HS_HIGHSPEED" value="1" desc="high speed (higher power)" />
+        </field>
+      </register>
+      <register name="IDAC8_CR1" address="0x4000582D" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
+        <field name="mx_data" from="5" to="5" access="RW" resetVal="" desc="Select DATA source">
+          <value name="MX_DATA_REG" value="0" desc="Select register source" />
+          <value name="MX_DATA_UDB" value="1" desc="Select UDB source" />
+        </field>
+        <field name="reset_udb_en" from="4" to="4" access="RW" resetVal="" desc="DAC reset enable">
+          <value name="RESET_UDB_EN_DISABLE" value="0" desc="Disable DAC Reset Source from UDB" />
+          <value name="RESET_UDB_EN_ENABLE" value="1" desc="Enable DAC Reset Source from UDB" />
+        </field>
+        <field name="mx_idir" from="3" to="3" access="RW" resetVal="" desc="Mux selection for DAC current direction control">
+          <value name="MX_IDIR_REG" value="0" desc="Register source idirbit selected" />
+          <value name="MX_IDIR_UDB" value="1" desc="UDB ictrl selected" />
+        </field>
+        <field name="idirbit" from="2" to="2" access="RW" resetVal="" desc="register source for DAC current direction" />
+        <field name="mx_ioff" from="1" to="1" access="RW" resetVal="" desc="Mux selection for DAC current off control">
+          <value name="MX_IOFF_REG" value="0" desc="Register source ioffbit selected" />
+          <value name="MX_IOFF_UDB" value="1" desc="UDB ictrl selected" />
+        </field>
+        <field name="ioffbit" from="0" to="0" access="RW" resetVal="" desc="register source for DAC current off" />
+      </register>
+      <register name="IDAC8_SW0" address="0x40005A98" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
+        <field name="v_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="v_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="IDAC8_SW2" address="0x40005A9A" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
+        <field name="v_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+        <field name="v_abus1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+      </register>
+      <register name="IDAC8_SW3" address="0x40005A9B" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
+        <field name="iout" from="7" to="7" access="RW" resetVal="" desc="Connect current output to pad">
+          <value name="IOUT_NC" value="0" desc="not connected" />
+          <value name="IOUT_CONNECT" value="1" desc="Connect to pad" />
+        </field>
+        <field name="i_amx" from="4" to="4" access="RW" resetVal="" desc="Connect current output to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+        <field name="v_amx" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+      </register>
+      <register name="IDAC8_SW4" address="0x40005A9C" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
+        <field name="i_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="i_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="IDAC8_STROBE" address="0x40005A9F" bitWidth="8" desc="DAC Strobe Register" hidden="false">
+        <field name="strobe_en" from="3" to="3" access="RW" resetVal="" desc="Strobe gating control ">
+          <value name="STROBE_EN_0" value="0" desc="disable strobe" />
+          <value name="STROBE_EN_1" value="1" desc="enable strobe" />
+        </field>
+        <field name="mx_strobe" from="2" to="0" access="RW" resetVal="" desc="Strobe source selection">
+          <value name="MX_STROBE_BUSWRITE" value="000" desc="Select bus write strobe source" />
+          <value name="MX_STROBE_UDB_SRC" value="001" desc="Select UDB strobe source" />
+          <value name="MX_STROBE_NC_2" value="010" desc="NC" />
+          <value name="MX_STROBE_NC_3" value="011" desc="NC" />
+          <value name="MX_STROBE_CLK_A0_DIG" value="100" desc="Select clk_a0_dig" />
+          <value name="MX_STROBE_CLK_A1_DIG" value="101" desc="Select clk_a1_dig" />
+          <value name="MX_STROBE_CLK_A2_DIG" value="110" desc="Select clk_a2_dig" />
+          <value name="MX_STROBE_CLK_A3_DIG" value="111" desc="Select clk_a3_dig" />
+        </field>
+      </register>
+      <register name="IDAC8_D" address="0x40005B83" bitWidth="8" desc="DAC Data Register" hidden="false">
+        <field name="data" from="7" to="0" access="RW" resetVal="" desc="8 DAC Data bits" />
+      </register>
+    </block>
+    <block name="CapSense_1_CompCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+      <block name="ctComp" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+      <register name="CapSense_1_CompCH0_Comp_PM_ACT_CFG" address="0x400043A7" bitWidth="8" desc="Active Power Mode Configuration Register 7" hidden="false">
+        <field name="en_cmp" from="3" to="0" access="RW" resetVal="" desc="Enable comparator. Populated subsystems are counted from the LSB, for example bit 0 corresponds to comparator 0" />
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_PM_STBY_CFG" address="0x400043B7" bitWidth="8" desc="Standby Power Mode Configuration Register 7" hidden="false">
+        <field name="en_cmp" from="3" to="0" access="RW" resetVal="" desc="Enable comparator. Populated subsystems are counted from the LSB, for example bit 0 corresponds to comparator 0" />
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_TR0" address="0x40004632" bitWidth="8" desc="Comparator Trim Register_TR0" hidden="false">
+        <field name="trimA[4:0]" from="4" to="0" access="RW" resetVal="" desc="Sets the trim value to be added to the P-type load for offset calibration">
+          <value name="TRIMA_0" value="00000" desc="Does not add any offset" />
+          <value name="TRIMA_POS_SIDE_1" value="00001" desc="Adds offset of ~1mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_2" value="00010" desc="Adds offset of ~2mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_3" value="00011" desc="Adds offset of ~3mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_4" value="00100" desc="Adds offset of ~4mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_5" value="00101" desc="Adds offset of ~5mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_6" value="00110" desc="Adds offset of ~6mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_7" value="00111" desc="Adds offset of ~7mV to the positive side" />
+          <value name="TRIMA_POS_SIDE_8" value="01000" desc="Adds offset of ~8mV to the positive side" />
+          <value name="TRIMA_NEG_SIDE_1" value="01010" desc="Adds offset of ~0mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_2" value="01011" desc="Adds offset of ~1mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_3" value="01100" desc="Adds offset of ~2mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_4" value="01101" desc="Adds offset of ~3mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_5" value="01110" desc="Adds offset of ~4mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_6" value="01111" desc="Adds offset of ~5mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_7" value="10000" desc="Adds offset of ~6mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_8" value="10001" desc="Adds offset of ~7mV to the negative side" />
+          <value name="TRIMA_NEG_SIDE_9" value="10010" desc="Adds offset of ~8mV to the negative side" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_TR1" address="0x40004633" bitWidth="8" desc="Comparator Trim Register_TR1" hidden="false">
+        <field name="trimB[4:0]" from="4" to="0" access="RW" resetVal="" desc="Sets the trim value to be added to the N-type load for offset calibration">
+          <value name="TRIMB_0" value="00000" desc="Does not add any offset" />
+          <value name="TRIMB_NEG_SIDE_1" value="00001" desc="Adds offset of ~1mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_2" value="00010" desc="Adds offset of ~2mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_3" value="00011" desc="Adds offset of ~3mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_4" value="00100" desc="Adds offset of ~4mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_5" value="00101" desc="Adds offset of ~5mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_6" value="00110" desc="Adds offset of ~6mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_7" value="00111" desc="Adds offset of ~7mV to the negative side" />
+          <value name="TRIMB_NEG_SIDE_8" value="01000" desc="Adds offset of ~8mV to the negative side" />
+          <value name="TRIMB_9" value="01010" desc="Does not add any offset" />
+          <value name="TRIMB_POS_SIDE_1" value="01011" desc="Adds offset of ~1mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_2" value="01100" desc="Adds offset of ~2mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_3" value="01101" desc="Adds offset of ~3mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_4" value="01110" desc="Adds offset of ~4mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_5" value="01111" desc="Adds offset of ~5mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_6" value="10000" desc="Adds offset of ~6mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_7" value="10001" desc="Adds offset of ~7mV to the positive side" />
+          <value name="TRIMB_POS_SIDE_8" value="10010" desc="Adds offset of ~8mV to the positive side" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_CR" address="0x40005841" bitWidth="8" desc="Comparator Control Register" hidden="false">
+        <field name="filt" from="6" to="6" access="RW" resetVal="" desc="enables a glitch filter at the output of the comparator">
+          <value name="FILT_DISABLE" value="0" desc="Disable glitch filter" />
+          <value name="FILT_ENABLE" value="1" desc="Enable glitch filter" />
+        </field>
+        <field name="hyst" from="5" to="5" access="RW" resetVal="" desc="enables a hysteresis of 10mV typ">
+          <value name="HYST_DISABLE" value="1" desc="Disable hysteresis" />
+          <value name="HYST_ENABLE" value="0" desc="Enable hysteresis" />
+        </field>
+        <field name="cal_en" from="4" to="4" access="RW" resetVal="" desc="enables shorting of the two comparator inputs for trim calibration purposes">
+          <value name="CAL_EN_DISABLE" value="0" desc="Disable calibration" />
+          <value name="CAL_EN_ENABLE" value="1" desc="Enable calibration" />
+        </field>
+        <field name="mx_ao" from="3" to="3" access="RW" resetVal="" desc="comparator sleep always-on logic mux control">
+          <value name="MX_AO_BYPASS" value="0" desc="Bypass comparator sleep always-on logic" />
+          <value name="MX_AO_ENABLE" value="1" desc="Enable comparator sleep always-on logic" />
+        </field>
+        <field name="pd_override" from="2" to="2" access="RW" resetVal="" desc="Power down override to allow comparator to continue operating during sleep">
+          <value name="PD_OVERRIDE_DISABLE" value="0" desc="Don't override power down" />
+          <value name="PD_OVERRIDE_ENABLE" value="1" desc="Override power down" />
+        </field>
+        <field name="sel" from="1" to="0" access="RW" resetVal="" desc="Selects the mode of operation of the comparator">
+          <value name="SEL_SLOW" value="00" desc="slow mode" />
+          <value name="SEL_FAST" value="01" desc="fast mode" />
+          <value name="SEL_LP" value="10" desc="ultra low power mode" />
+          <value name="SEL_ILLEGAL" value="11" desc="Illegal Mode" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_SW0" address="0x40005AC8" bitWidth="8" desc="Comparator Analog Routing Register 0" hidden="false">
+        <field name="vp_ag7" from="7" to="7" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag6" from="6" to="6" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag5" from="5" to="5" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag4" from="4" to="4" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag3" from="3" to="3" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag2" from="2" to="2" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vp_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect positive voltage input to analog global of same side ">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_SW2" address="0x40005ACA" bitWidth="8" desc="Comparator Analog Routing Register 2" hidden="false">
+        <field name="vp_abus1" from="1" to="1" access="RW" resetVal="" desc="Connect positive voltage input to analog (local) bus of the same side">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+        <field name="vp_abus0" from="0" to="0" access="RW" resetVal="" desc="Connect positive voltage input to analog (local) bus of the same side">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_SW3" address="0x40005ACB" bitWidth="8" desc="Comparator Analog Routing Register 3" hidden="false">
+        <field name="vn_vref1" from="6" to="6" access="RW" resetVal="" desc="Connect negative voltage input to Voltage Reference 1">
+          <value name="VREF_NC" value="0" desc="not connected" />
+          <value name="VREF_CONNECTED" value="1" desc="Connect to Voltage Reference" />
+        </field>
+        <field name="vn_vref0" from="5" to="5" access="RW" resetVal="" desc="Connect negative voltage input to Voltage Reference 0">
+          <value name="VREF_NC" value="0" desc="not connected" />
+          <value name="VREF_CONNECTED" value="1" desc="Connect to Voltage Reference" />
+        </field>
+        <field name="vn_amx" from="4" to="4" access="RW" resetVal="" desc="Connect negative voltage input to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+        <field name="vp_refbuf" from="3" to="3" access="RW" resetVal="" desc="Connect positive voltage input to CapSense reference buffer channel">
+          <value name="VP_REFBUF_ENABLED" value="0" desc="disable" />
+          <value name="VP_REFBUF_DISABLED" value="1" desc="enable" />
+        </field>
+        <field name="vp_amx" from="0" to="0" access="RW" resetVal="" desc="Connect positive voltage input to Analog Mux Bus">
+          <value name="AMX_NC" value="0" desc="not connected" />
+          <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_SW4" address="0x40005ACC" bitWidth="8" desc="Comparator Analog Routing Register 4" hidden="false">
+        <field name="vn_ag6" from="6" to="6" access="RW" resetVal="" desc="Connect negative voltage input to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vn_ag4" from="4" to="4" access="RW" resetVal="" desc="Connect negative voltage input to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vn_ag2" from="2" to="2" access="RW" resetVal="" desc="Connect negative voltage input to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+        <field name="vn_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect negative voltage input to analog global of same side">
+          <value name="AG_NC" value="0" desc="not connected" />
+          <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_SW6" address="0x40005ACE" bitWidth="8" desc="Comparator Analog Routing Register 6" hidden="false">
+        <field name="vn_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect negative voltage input to analog (local) bus of the same side">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+        <field name="vn_abus2" from="2" to="2" access="RW" resetVal="" desc="Connect negative voltage input to analog (local) bus of the same side">
+          <value name="ABUS_NC" value="0" desc="not connected" />
+          <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_CLK" address="0x40005ACF" bitWidth="8" desc="Comparator Clock Control Register" hidden="false">
+        <field name="bypass_sync" from="4" to="4" access="RW" resetVal="" desc="Bypass Synchronization">
+          <value name="BYPASS_SYNC_0" value="0" desc="Synchronization not bypassed (Synchronization enabled)" />
+          <value name="BYPASS_SYNC_1" value="1" desc="Synchronization bypassed (Synchronization disabled)" />
+        </field>
+        <field name="clk_en" from="3" to="3" access="RW" resetVal="" desc="Clock gating control">
+          <value name="CLK_EN_0" value="0" desc="disable clock" />
+          <value name="CLK_EN_1" value="1" desc="enable clock" />
+        </field>
+        <field name="mx_clk" from="2" to="0" access="RW" resetVal="" desc="Clock Selection">
+          <value name="MX_CLK_0" value="000" desc="Select clk_a0 and clk_a0_dig" />
+          <value name="MX_CLK_1" value="001" desc="Select clk_a1 and clk_a1_dig" />
+          <value name="MX_CLK_2" value="010" desc="Select clk_a2 and clk_a2_dig" />
+          <value name="MX_CLK_3" value="011" desc="Select clk_a3 and clk_a3_dig" />
+          <value name="MX_CLK_4" value="100" desc="Select UDB generated clock" />
+          <value name="MX_CLK_5" value="101" desc="Reserved" />
+          <value name="MX_CLK_6" value="110" desc="Reserved" />
+          <value name="MX_CLK_7" value="111" desc="Reserved" />
+        </field>
+      </register>
+      <register name="CapSense_1_CompCH0_Comp_WRK" address="0x40005B96" bitWidth="8" desc="Comparator output working register" hidden="false">
+        <field name="cmp3_out" from="3" to="3" access="R" resetVal="" desc="Comparator Output" />
+        <field name="cmp2_out" from="2" to="2" access="R" resetVal="" desc="Comparator Output" />
+        <field name="cmp1_out" from="1" to="1" access="R" resetVal="" desc="Comparator Output" />
+        <field name="cmp0_out" from="0" to="0" access="R" resetVal="" desc="Comparator Output" />
+      </register>
+    </block>
+    <block name="OneTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="IsrCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="Select_VrefCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ClockGen" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="MeasureCH0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="ScanSpeed_CTL_REG" address="0x40006496" bitWidth="8" desc="CapSense Clock Prescaler Control Register" hidden="false">
+      <field name="Counter" from="3" to="3" access="R" resetVal="" desc="Clock Prescaler Enable">
+        <value name="Disabled" value="0" desc="Prescaler counter is disabled" />
+        <value name="Enabled" value="1" desc="Prescaler counter is enabled" />
+      </field>
+    </register>
+    <register name="CTL_REG" address="0x40006574" bitWidth="8" desc="CapSense Control Register" hidden="false">
+      <field name="Channel 1" from="3" to="3" access="R" resetVal="" desc="Channel 1 Enable">
+        <value name="Disabled" value="0" desc="Channel 1 scanning is disabled" />
+        <value name="Enabled" value="1" desc="Channel 1 scanning is enabled" />
+      </field>
+      <field name="Channel 0" from="2" to="2" access="R" resetVal="" desc="Channel 0 Enable">
+        <value name="Disabled" value="0" desc="Channel 0 scanning is disabled" />
+        <value name="Enabled" value="1" desc="Channel 0 scanning is enabled" />
+      </field>
+      <field name="Measure" from="1" to="1" access="R" resetVal="" desc="Measurement Enable">
+        <value name="Disabled" value="0" desc="Capacitance measurement is disabled" />
+        <value name="Enabled" value="1" desc="Capacitance measurement is enabled" />
+      </field>
+      <field name="Sync" from="0" to="0" access="R" resetVal="" desc="Reset Digital and Pre-Charge Clocks">
+        <value name="Disabled" value="0" desc="Clocks are in the reset state" />
+        <value name="Enabled" value="1" desc="Clocks are enabled" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_7_Control_Reg" address="0x40006477" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_7_COMPARE_Reg" address="0x40006526" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_7_STATUS_MASK" address="0x40006587" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_7_STATUS_AUX_CTRLDP0" address="0x40006596" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_7_STATUS_AUX_CTRLDP1" address="0x40006597" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="GPIO_5_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_5_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_5_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDAC_out_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_1_COMPARE_Reg" address="0x40006524" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_1_Control_Reg" address="0x40006575" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_1_STATUS_MASK" address="0x40006585" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_1_STATUS_AUX_CTRLDP0" address="0x40006594" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_1_STATUS_AUX_CTRLDP1" address="0x40006595" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="vmIRQ" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmCompare" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="vmTC" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="FFKillMux" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="OneTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="PWMUDB" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="PWM_2_COMPARE_Reg" address="0x40006428" bitWidth="16" desc="UDB.D0 - Assigned Compare Value" hidden="false" />
+    <register name="PWM_2_Control_Reg" address="0x40006478" bitWidth="8" desc="UDB Control Register - Assigned Control Register Value" hidden="false">
+      <field name="CTRL_ENABLE" from="7" to="7" access="RW" resetVal="" desc="Enable the PWM" />
+      <field name="CTRL_CMPMODE2" from="5" to="3" access="RW" resetVal="" desc="Compare mode 2" />
+      <field name="CTRL_CMPMODE1" from="2" to="0" access="RW" resetVal="" desc="Compare mode 1" />
+    </register>
+    <register name="PWM_2_STATUS_MASK" address="0x40006489" bitWidth="8" desc="UDB Status bits Interrupt Mask Enable Register" hidden="false">
+      <field name="PWM_STS_CMP1" from="0" to="0" access="R" resetVal="" desc="Enables the Interrupt on Compare 1" />
+      <field name="PWM_STS_CMP2" from="1" to="1" access="R" resetVal="" desc="Enables the Interrupt on Compare 2" />
+      <field name="PWM_STS_TC" from="2" to="2" access="R" resetVal="" desc="Enables the Interrupt on Terminal Count" />
+      <field name="PWM_STS_FIFO_FULL" from="3" to="3" access="R" resetVal="" desc="FIFO Full Status Mask " />
+      <field name="PWM_STS_KILL" from="5" to="5" access="R" resetVal="" desc="Enables the Interrupt on Kill" />
+    </register>
+    <register name="PWM_2_STATUS_AUX_CTRLDP0" address="0x40006498" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+    <register name="PWM_2_STATUS_AUX_CTRLDP1" address="0x40006499" bitWidth="8" desc="UDB Auxilliary Control Register" hidden="false">
+      <field name="FIFO0_CLR" from="0" to="0" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO1_CLR" from="1" to="1" access="RW" resetVal="" desc="FIFO1 clear">
+        <value name="E_FIFO_CLR_0" value="0" desc="Normal FIFO operation" />
+        <value name="E_FIFO_CLR_1" value="1" desc="Clear FIFO state" />
+      </field>
+      <field name="FIFO0_LVL" from="2" to="2" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="FIFO1_LVL" from="3" to="3" access="RW" resetVal="" desc="FIFO level">
+        <value name="E_FIFO_LVL_0" value="0" desc="FIFO LVL: input mode: FIFO not full; output mode: FIFO not empty" />
+        <value name="E_FIFO_LVL_1" value="1" desc="FIFO LVL: input mode: FIFO at least 1/2 empty; output mode: FIFO at least 1/2 full" />
+      </field>
+      <field name="INT_EN" from="4" to="4" access="RW" resetVal="" desc="">
+        <value name="E_INT_EN0" value="0" desc="Interrupt disabled" />
+        <value name="E_INT_EN1" value="1" desc="Interrupt enabled" />
+      </field>
+      <field name="CNT_START" from="5" to="5" access="RW" resetVal="" desc="FIFO0 clear">
+        <value name="E_CNT_START0" value="0" desc="Disable counter" />
+        <value name="E_CNT_START1" value="1" desc="Enable counter" />
+      </field>
+    </register>
+  </block>
+  <block name="PWM_out_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_CLK_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="VDAC8_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="viDAC8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="VDAC8_PM_ACT_CFG" address="0x400043A8" bitWidth="8" desc="Active Power Mode Configuration Register 8" hidden="false">
+      <field name="en_dac" from="4" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB" />
+    </register>
+    <register name="VDAC8_PM_STBY_CFG" address="0x400043B8" bitWidth="8" desc="Standby Power Mode Configuration Register 8" hidden="false">
+      <field name="en_dac" from="4" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB" />
+    </register>
+    <register name="VDAC8_TR" address="0x40004609" bitWidth="8" desc="VDAC8_TR" hidden="false">
+      <field name="tr" from="7" to="0" access="RW" resetVal="" desc="8 Calibration bits" />
+    </register>
+    <register name="VDAC8_CR0" address="0x40005824" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
+      <field name="mode" from="4" to="4" access="R" resetVal="" desc="Mode Bit">
+        <value name="DAC_MODE_V" value="0" desc="voltage DAC" />
+        <value name="DAC_MODE_I" value="1" desc="current DAC" />
+      </field>
+      <field name="range" from="3" to="2" access="RW" resetVal="" desc="Ranges for mode=0 (VDAC) and mode=1 (IDAC)">
+        <value name="DAC_RANGE_0" value="00" desc="x0=0V to 4*vref (1.024V); 0 to 31.875uA" />
+        <value name="DAC_RANGE_1" value="01" desc="x1=0V to 16*vref (4.096V); 0 to 255uA" />
+        <value name="DAC_RANGE_2" value="10" desc="x0=0V to 4*vref (1.024V); 0 to 2.040mA" />
+        <value name="DAC_RANGE_3" value="11" desc="x1=0V to 16*vref (4.096V); not used" />
+      </field>
+      <field name="hs" from="1" to="1" access="RW" resetVal="" desc="High Speed Bit">
+        <value name="DAC_HS_LOWPOWER" value="0" desc="regular (low power)" />
+        <value name="DAC_HS_HIGHSPEED" value="1" desc="high speed (higher power)" />
+      </field>
+    </register>
+    <register name="VDAC8_CR1" address="0x40005825" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
+      <field name="mx_data" from="5" to="5" access="RW" resetVal="" desc="Select DATA source">
+        <value name="MX_DATA_REG" value="0" desc="Select register source (DACxn_D)" />
+        <value name="MX_DATA_UDB" value="1" desc="Select UDB source" />
+      </field>
+      <field name="mx_idir" from="3" to="3" access="RW" resetVal="" desc="Mux selection for DAC current direction control">
+        <value name="MX_IDIR_REG" value="0" desc="Register source idirbit selected" />
+        <value name="MX_IDIR_UDB" value="1" desc="UDB ictrl selected" />
+      </field>
+      <field name="mx_ioff" from="1" to="1" access="RW" resetVal="" desc="Mux selection for DAC current off control">
+        <value name="MX_IOFF_REG" value="0" desc="Register source ioffbit selected" />
+        <value name="MX_IOFF_UDB" value="1" desc="UDB ictrl selected" />
+      </field>
+      <field name="reset_udb_en" from="4" to="4" access="RW" resetVal="" desc="DAC reset enable">
+        <value name="RESET_UDB_EN_DISABLE" value="0" desc="Disable DAC Reset Source from UDB (System reset always resets)" />
+        <value name="RESET_UDB_EN_ENABLE" value="1" desc="Enable DAC Reset Source from UDB" />
+      </field>
+    </register>
+    <register name="VDAC8_SW0" address="0x40005A88" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
+      <field name="v_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+      <field name="v_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+    </register>
+    <register name="VDAC8_SW2" address="0x40005A8A" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
+      <field name="v_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+        <value name="ABUS_NC" value="0" desc="not connected" />
+        <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+      </field>
+      <field name="v_abus1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+        <value name="ABUS_NC" value="0" desc="not connected" />
+        <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+      </field>
+    </register>
+    <register name="VDAC8_SW3" address="0x40005A8B" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
+      <field name="iout" from="7" to="7" access="RW" resetVal="" desc="Connect current output to pad">
+        <value name="IOUT_NC" value="0" desc="not connected" />
+        <value name="IOUT_CONNECT" value="1" desc="Connect to pad" />
+      </field>
+      <field name="i_amx" from="4" to="4" access="RW" resetVal="" desc="Connect current output to Analog Mux Bus">
+        <value name="AMX_NC" value="0" desc="not connected" />
+        <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+      </field>
+      <field name="v_amx" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to Analog Mux Bus">
+        <value name="AMX_NC" value="0" desc="not connected" />
+        <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+      </field>
+    </register>
+    <register name="VDAC8_SW4" address="0x40005A8C" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
+      <field name="i_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+      <field name="i_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+    </register>
+    <register name="VDAC8_STROBE" address="0x40005A8F" bitWidth="8" desc="DAC Strobe Register" hidden="false">
+      <field name="mx_strobe" from="2" to="0" access="RW" resetVal="" desc="Strobe source selection">
+        <value name="MX_STROBE_BUSWRITE" value="000" desc="Select bus write strobe source (Enable gater regardless of strobe_en setting)" />
+        <value name="MX_STROBE_UDB_SRC" value="001" desc="Select UDB strobe source" />
+        <value name="MX_STROBE_NC_2" value="010" desc="NC" />
+        <value name="MX_STROBE_NC_3" value="011" desc="NC" />
+        <value name="MX_STROBE_CLK_A0_DIG" value="100" desc="Select clk_a0_dig" />
+        <value name="MX_STROBE_CLK_A1_DIG" value="101" desc="Select clk_a1_dig" />
+        <value name="MX_STROBE_CLK_A2_DIG" value="110" desc="Select clk_a2_dig" />
+        <value name="MX_STROBE_CLK_A3_DIG" value="111" desc="Select clk_a3_dig" />
+      </field>
+      <field name="strobe_en" from="3" to="3" access="RW" resetVal="" desc="Strobe gating control (See mx_strobe==3'h0)">
+        <value name="STROBE_EN_0" value="0" desc="disable strobe" />
+        <value name="STROBE_EN_1" value="1" desc="enable strobe" />
+      </field>
+    </register>
+    <register name="VDAC8_DATA" address="0x40005B81" bitWidth="8" desc="DAC Data Register" hidden="false">
+      <field name="data" from="7" to="0" access="RW" resetVal="" desc="8 DAC Data bits" />
+    </register>
+  </block>
+  <block name="IDAC_out_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="PWM_out_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="IDAC8_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="ZeroTerminal_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_analog_noconnect_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="viDAC8" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="not_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="VirtualMux_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <register name="IDAC8_PM_ACT_CFG" address="0x400043A8" bitWidth="8" desc="Active Power Mode Configuration Register 8" hidden="false">
+      <field name="en_dac" from="3" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB." />
+    </register>
+    <register name="IDAC8_PM_STBY_CFG" address="0x400043B8" bitWidth="8" desc="Standby Power Mode Configuration Register 8" hidden="false">
+      <field name="en_dac" from="3" to="0" access="RW" resetVal="" desc="Enable DAC block(s). Populated subsystems are counted from the LSB." />
+    </register>
+    <register name="IDAC8_TR" address="0x4000460A" bitWidth="8" desc="IDAC8_TR" hidden="false">
+      <field name="tr" from="7" to="0" access="RW" resetVal="" desc="8 Calibration bits" />
+    </register>
+    <register name="IDAC8_CR0" address="0x40005828" bitWidth="8" desc="DAC Block Control Register 0" hidden="false">
+      <field name="mode" from="4" to="4" access="R" resetVal="" desc="Mode Bit">
+        <value name="DAC_MODE_V" value="0" desc="voltage DAC" />
+        <value name="DAC_MODE_I" value="1" desc="current DAC" />
+      </field>
+      <field name="range" from="3" to="2" access="RW" resetVal="" desc="Ranges for mode=0 (VDAC) and mode=1 (IDAC)">
+        <value name="DAC_RANGE_0" value="00" desc="x0=0V to 4*vref (1.024V); 0 to 31.875uA" />
+        <value name="DAC_RANGE_1" value="01" desc="x1=0V to 16*vref (4.096V); 0 to 255uA" />
+        <value name="DAC_RANGE_2" value="10" desc="x0=0V to 4*vref (1.024V); 0 to 2.040mA" />
+        <value name="DAC_RANGE_3" value="11" desc="x1=0V to 16*vref (4.096V); not used" />
+      </field>
+      <field name="hs" from="1" to="1" access="RW" resetVal="" desc="High Speed Bit">
+        <value name="DAC_HS_LOWPOWER" value="0" desc="regular (low power)" />
+        <value name="DAC_HS_HIGHSPEED" value="1" desc="high speed (higher power)" />
+      </field>
+    </register>
+    <register name="IDAC8_CR1" address="0x40005829" bitWidth="8" desc="DAC Block Control Register 1" hidden="false">
+      <field name="mx_data" from="5" to="5" access="RW" resetVal="" desc="Select DATA source">
+        <value name="MX_DATA_REG" value="0" desc="Select register source" />
+        <value name="MX_DATA_UDB" value="1" desc="Select UDB source" />
+      </field>
+      <field name="reset_udb_en" from="4" to="4" access="RW" resetVal="" desc="DAC reset enable">
+        <value name="RESET_UDB_EN_DISABLE" value="0" desc="Disable DAC Reset Source from UDB" />
+        <value name="RESET_UDB_EN_ENABLE" value="1" desc="Enable DAC Reset Source from UDB" />
+      </field>
+      <field name="mx_idir" from="3" to="3" access="RW" resetVal="" desc="Mux selection for DAC current direction control">
+        <value name="MX_IDIR_REG" value="0" desc="Register source idirbit selected" />
+        <value name="MX_IDIR_UDB" value="1" desc="UDB ictrl selected" />
+      </field>
+      <field name="idirbit" from="2" to="2" access="RW" resetVal="" desc="register source for DAC current direction" />
+      <field name="mx_ioff" from="1" to="1" access="RW" resetVal="" desc="Mux selection for DAC current off control">
+        <value name="MX_IOFF_REG" value="0" desc="Register source ioffbit selected" />
+        <value name="MX_IOFF_UDB" value="1" desc="UDB ictrl selected" />
+      </field>
+      <field name="ioffbit" from="0" to="0" access="RW" resetVal="" desc="register source for DAC current off" />
+    </register>
+    <register name="IDAC8_SW0" address="0x40005A90" bitWidth="8" desc="DAC Analog Routing Register 0" hidden="false">
+      <field name="v_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+      <field name="v_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+    </register>
+    <register name="IDAC8_SW2" address="0x40005A92" bitWidth="8" desc="DAC Analog Routing Register 2" hidden="false">
+      <field name="v_abus3" from="3" to="3" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+        <value name="ABUS_NC" value="0" desc="not connected" />
+        <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+      </field>
+      <field name="v_abus1" from="1" to="1" access="RW" resetVal="" desc="Connect voltage output to analog (local) bus of the same side ">
+        <value name="ABUS_NC" value="0" desc="not connected" />
+        <value name="ABUS_CONNECTED" value="1" desc="Connect to Analog (local) Bus" />
+      </field>
+    </register>
+    <register name="IDAC8_SW3" address="0x40005A93" bitWidth="8" desc="DAC Analog Routing Register 3" hidden="false">
+      <field name="iout" from="7" to="7" access="RW" resetVal="" desc="Connect current output to pad">
+        <value name="IOUT_NC" value="0" desc="not connected" />
+        <value name="IOUT_CONNECT" value="1" desc="Connect to pad" />
+      </field>
+      <field name="i_amx" from="4" to="4" access="RW" resetVal="" desc="Connect current output to Analog Mux Bus">
+        <value name="AMX_NC" value="0" desc="not connected" />
+        <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+      </field>
+      <field name="v_amx" from="0" to="0" access="RW" resetVal="" desc="Connect voltage output to Analog Mux Bus">
+        <value name="AMX_NC" value="0" desc="not connected" />
+        <value name="AMX_CONNECTED" value="1" desc="Connect to AMUXBUS" />
+      </field>
+    </register>
+    <register name="IDAC8_SW4" address="0x40005A94" bitWidth="8" desc="DAC Analog Routing Register 4" hidden="false">
+      <field name="i_ag1" from="1" to="1" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+      <field name="i_ag0" from="0" to="0" access="RW" resetVal="" desc="Connect current output to analog global of same side">
+        <value name="AG_NC" value="0" desc="not connected" />
+        <value name="AG_CONNECTED" value="1" desc="Connect to Analog Global" />
+      </field>
+    </register>
+    <register name="IDAC8_STROBE" address="0x40005A97" bitWidth="8" desc="DAC Strobe Register" hidden="false">
+      <field name="strobe_en" from="3" to="3" access="RW" resetVal="" desc="Strobe gating control ">
+        <value name="STROBE_EN_0" value="0" desc="disable strobe" />
+        <value name="STROBE_EN_1" value="1" desc="enable strobe" />
+      </field>
+      <field name="mx_strobe" from="2" to="0" access="RW" resetVal="" desc="Strobe source selection">
+        <value name="MX_STROBE_BUSWRITE" value="000" desc="Select bus write strobe source" />
+        <value name="MX_STROBE_UDB_SRC" value="001" desc="Select UDB strobe source" />
+        <value name="MX_STROBE_NC_2" value="010" desc="NC" />
+        <value name="MX_STROBE_NC_3" value="011" desc="NC" />
+        <value name="MX_STROBE_CLK_A0_DIG" value="100" desc="Select clk_a0_dig" />
+        <value name="MX_STROBE_CLK_A1_DIG" value="101" desc="Select clk_a1_dig" />
+        <value name="MX_STROBE_CLK_A2_DIG" value="110" desc="Select clk_a2_dig" />
+        <value name="MX_STROBE_CLK_A3_DIG" value="111" desc="Select clk_a3_dig" />
+      </field>
+    </register>
+    <register name="IDAC8_D" address="0x40005B82" bitWidth="8" desc="DAC Data Register" hidden="false">
+      <field name="data" from="7" to="0" access="RW" resetVal="" desc="8 DAC Data bits" />
+    </register>
+  </block>
+  <block name="GPIO_12_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_5_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_3" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="analog_in_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_4" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_12_0" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="GPIO_2_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+</blockRegMap>
